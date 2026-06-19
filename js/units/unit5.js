@@ -508,29 +508,146 @@ console.log(\`ราคารวมทั้งสิ้น (รวม VAT 7%): 
 const unit5Workshop = {
   title: 'ใบงานท้ายบทที่ 5: การประยุกต์ใช้งานอาร์เรย์และฟังก์ชัน',
   fileName: 'workshop5.ts',
-  description: 'ให้นักเรียนปฏิบัติการเขียนโค้ดด้วยภาษา TypeScript ตามโจทย์การทำงานที่กำหนด โดยเมื่อทำเสร็จสิ้นให้ตั้งชื่อไฟล์ส่งงานว่า <code class="filename">workshop5.ts</code>',
+  description: 'ให้นักเรียนฝึกเขียนโปรแกรมด้วยภาษา TypeScript ตามโจทย์แต่ละข้อ โดยเขียนโค้ดทุกข้อรวมไว้ในไฟล์เดียว ตั้งชื่อไฟล์ส่งงานว่า <code class="filename">workshop5.ts</code>',
   tasks: [
     {
-      title: 'ข้อที่ 1: ระบบจัดการรายชื่อเพื่อน (Array: push & pop)',
-      instruction: `ให้นักเรียนเขียนคำสั่งดังต่อไปนี้:<br>
-        1. สร้างตัวแปร Array ชนิดสตริงเพื่อเก็บชื่อเพื่อนเริ่มต้นจำนวน 5 คน<br>
-        2. ใช้คำสั่ง <code>push()</code> เพื่อเพิ่มเพื่อนใหม่เข้ามาอีก 1 คน และแสดงผลอาร์เรย์ทางคอนโซล<br>
-        3. ใช้คำสั่ง <code>pop()</code> เพื่อลบชื่อเพื่อนคนสุดท้ายออก และแสดงผลอาร์เรย์ทางคอนโซลหลังจากลบ`,
-      hint: 'ใช้ <code>let friends: string[] = [...]</code> ในการเริ่มต้นประกาศตัวแปร'
+      title: 'ข้อที่ 1: จัดการรายชื่อเพื่อน',
+      difficulty: '⭐ ง่าย',
+      objective: 'ฝึกใช้ Array เบื้องต้น — สร้าง, เพิ่ม (<code>push</code>), ลบ (<code>pop</code>) ข้อมูล',
+      instruction: `
+        <div class="workshop-steps">
+          <div class="workshop-step">
+            <span class="workshop-step__num">1</span>
+            <span>สร้างตัวแปร <code>friends</code> เป็น Array ของ string เก็บชื่อเพื่อน <strong>5 คน</strong></span>
+          </div>
+          <div class="workshop-step">
+            <span class="workshop-step__num">2</span>
+            <span>ใช้ <code>push()</code> เพิ่มชื่อเพื่อนอีก <strong>1 คน</strong> เข้าไปท้าย Array</span>
+          </div>
+          <div class="workshop-step">
+            <span class="workshop-step__num">3</span>
+            <span>แสดงผล Array ทางคอนโซลด้วย <code>console.log()</code></span>
+          </div>
+          <div class="workshop-step">
+            <span class="workshop-step__num">4</span>
+            <span>ใช้ <code>pop()</code> ลบชื่อเพื่อนคนสุดท้ายออก</span>
+          </div>
+          <div class="workshop-step">
+            <span class="workshop-step__num">5</span>
+            <span>แสดงผล Array อีกครั้งหลังจากลบ</span>
+          </div>
+        </div>
+      `,
+      starterCode: `// ข้อที่ 1: จัดการรายชื่อเพื่อน
+// --- เขียนโค้ดต่อจากตรงนี้ ---
+
+// 1. สร้าง Array เก็บชื่อเพื่อน 5 คน
+let friends: string[] = ["ชื่อ1", "ชื่อ2", "ชื่อ3", "ชื่อ4", "ชื่อ5"];
+
+// 2. เพิ่มเพื่อนอีก 1 คน
+// (เขียนคำสั่ง push ตรงนี้)
+
+// 3. แสดงผล Array
+console.log("หลังเพิ่ม:", friends);
+
+// 4. ลบเพื่อนคนสุดท้ายออก
+// (เขียนคำสั่ง pop ตรงนี้)
+
+// 5. แสดงผล Array หลังลบ
+console.log("หลังลบ:", friends);`,
+      expectedOutput: `หลังเพิ่ม: ["ชื่อ1", "ชื่อ2", "ชื่อ3", "ชื่อ4", "ชื่อ5", "ชื่อ6"]
+หลังลบ: ["ชื่อ1", "ชื่อ2", "ชื่อ3", "ชื่อ4", "ชื่อ5"]`,
+      hint: 'เปลี่ยน "ชื่อ1", "ชื่อ2" ... เป็นชื่อจริงของเพื่อนในห้องได้เลย'
     },
     {
-      title: 'ข้อที่ 2: ฟังก์ชันสำหรับประมวลผลคำนวณ (Functions & Arrow Functions)',
-      instruction: `ให้นักเรียนเขียนฟังก์ชันต่อไปนี้:<br>
-        1. สร้างฟังก์ชันปกติชื่อ <code>add(a: number, b: number): number</code> สำหรับหาผลรวมของตัวเลข 2 จำนวนและคืนค่ากลับ<br>
-        2. สร้าง Arrow Function สำหรับหาพื้นที่สี่เหลี่ยมผืนผ้า โดยรับค่าความกว้างและสูงเป็นตัวเลข และคืนค่าผลพื้นที่คูณออกมา`,
-      hint: 'อย่าลืมใส่ Type Annotations ให้กับพารามิเตอร์และชนิดคืนกลับ (Return Type) ของฟังก์ชัน'
+      title: 'ข้อที่ 2: สร้างฟังก์ชันคำนวณ',
+      difficulty: '⭐⭐ ปานกลาง',
+      objective: 'ฝึกสร้าง Function ทั้งแบบปกติและ Arrow Function พร้อมกำหนด Type',
+      instruction: `
+        <div class="workshop-steps">
+          <div class="workshop-step">
+            <span class="workshop-step__num">1</span>
+            <span>สร้าง <strong>ฟังก์ชันปกติ</strong> ชื่อ <code>add</code> ที่รับตัวเลข 2 ตัว แล้ว<strong>คืนค่าผลบวก</strong>กลับมา</span>
+          </div>
+          <div class="workshop-step">
+            <span class="workshop-step__num">2</span>
+            <span>สร้าง <strong>Arrow Function</strong> ชื่อ <code>calcArea</code> ที่รับค่า <code>width</code> กับ <code>height</code> แล้ว<strong>คืนค่าพื้นที่</strong> (กว้าง × สูง)</span>
+          </div>
+          <div class="workshop-step">
+            <span class="workshop-step__num">3</span>
+            <span>เรียกใช้ทั้ง 2 ฟังก์ชัน แล้วแสดงผลลัพธ์ทางคอนโซล</span>
+          </div>
+        </div>
+      `,
+      starterCode: `// ข้อที่ 2: สร้างฟังก์ชันคำนวณ
+// --- เขียนโค้ดต่อจากตรงนี้ ---
+
+// 1. ฟังก์ชันปกติ: บวกเลข 2 จำนวน
+function add(a: number, b: number): number {
+  // เขียน return ค่าผลบวกตรงนี้
+}
+
+// 2. Arrow Function: คำนวณพื้นที่สี่เหลี่ยม
+const calcArea = (width: number, height: number): number => {
+  // เขียน return ค่าพื้นที่ตรงนี้
+};
+
+// 3. ทดสอบเรียกใช้งาน
+console.log("ผลบวก 10 + 20 =", add(10, 20));
+console.log("พื้นที่ 5 x 8 =", calcArea(5, 8), "ตร.หน่วย");`,
+      expectedOutput: `ผลบวก 10 + 20 = 30
+พื้นที่ 5 x 8 = 40 ตร.หน่วย`,
+      hint: 'ใส่ <code>: number</code> หลังวงเล็บพารามิเตอร์ เพื่อบอก TypeScript ว่าฟังก์ชันจะคืนค่าตัวเลข'
     },
     {
-      title: 'ข้อที่ 3: การประมวลผลอาร์เรย์ชั้นสูง (Array Methods: filter & map)',
-      instruction: `ให้นักเรียนเขียนคำสั่งเพื่อคัดกรองและปรับปรุงข้อมูลดังนี้:<br>
-        1. ใช้เมธอด <code>filter()</code> คัดเลือกเฉพาะคะแนนที่มากกว่าหรือเท่ากับ 50 จากกลุ่มคะแนนชุดนี้: <code>[35, 45, 50, 65, 80, 90]</code> แล้วแสดงผลลัพธ์ใหม่ทางคอนโซล<br>
-        2. ใช้เมธอด <code>map()</code> เพื่อทำการเพิ่มคะแนนให้กับทุกคน คนละ 5 คะแนน จากกลุ่มคะแนนชุดนี้: <code>[50, 60, 70, 80]</code> แล้วแสดงผลลัพธ์ใหม่ทางคอนโซล`,
-      hint: 'สามารถเขียน Arrow Function บรรทัดเดียวในตัวรับค่าของเมธอดได้เลย เช่น <code>score => score + 5</code>'
+      title: 'ข้อที่ 3: คัดกรองและปรับคะแนน',
+      difficulty: '⭐⭐⭐ ท้าทาย',
+      objective: 'ฝึกใช้ <code>filter()</code> คัดกรองข้อมูล และ <code>map()</code> แปลงข้อมูลใน Array',
+      instruction: `
+        <div class="workshop-steps">
+          <div class="workshop-step">
+            <span class="workshop-step__num">1</span>
+            <span>สร้าง Array <code>allScores</code> เก็บคะแนน: <code>[35, 45, 50, 65, 80, 90]</code></span>
+          </div>
+          <div class="workshop-step">
+            <span class="workshop-step__num">2</span>
+            <span>ใช้ <code>filter()</code> คัดเฉพาะคะแนนที่ <strong>≥ 50</strong> เก็บในตัวแปร <code>passedScores</code></span>
+          </div>
+          <div class="workshop-step">
+            <span class="workshop-step__num">3</span>
+            <span>แสดงผลคะแนนที่ผ่านทางคอนโซล</span>
+          </div>
+          <div class="workshop-step">
+            <span class="workshop-step__num">4</span>
+            <span>สร้าง Array <code>bonusScores</code> จากคะแนนชุด <code>[50, 60, 70, 80]</code> โดยใช้ <code>map()</code> <strong>บวกเพิ่มคนละ 5 คะแนน</strong></span>
+          </div>
+          <div class="workshop-step">
+            <span class="workshop-step__num">5</span>
+            <span>แสดงผลคะแนนหลังบวกเพิ่มทางคอนโซล</span>
+          </div>
+        </div>
+      `,
+      starterCode: `// ข้อที่ 3: คัดกรองและปรับคะแนน
+// --- เขียนโค้ดต่อจากตรงนี้ ---
+
+// 1. สร้าง Array คะแนนทั้งหมด
+let allScores: number[] = [35, 45, 50, 65, 80, 90];
+
+// 2. ใช้ filter() คัดเฉพาะคะแนน >= 50
+let passedScores: number[] = allScores.filter(/* เขียนเงื่อนไขตรงนี้ */);
+
+// 3. แสดงผลคะแนนที่ผ่าน
+console.log("คะแนนที่ผ่าน:", passedScores);
+
+// 4. ใช้ map() บวกเพิ่มคนละ 5 คะแนน
+let originalScores: number[] = [50, 60, 70, 80];
+let bonusScores: number[] = originalScores.map(/* เขียนการบวกตรงนี้ */);
+
+// 5. แสดงผลคะแนนหลังบวกเพิ่ม
+console.log("คะแนนหลังบวกเพิ่ม:", bonusScores);`,
+      expectedOutput: `คะแนนที่ผ่าน: [50, 65, 80, 90]
+คะแนนหลังบวกเพิ่ม: [55, 65, 75, 85]`,
+      hint: 'เขียน Arrow Function สั้นๆ ในวงเล็บได้เลย เช่น <code>filter(score => score >= 50)</code> หรือ <code>map(score => score + 5)</code>'
     }
   ]
 };

@@ -658,6 +658,25 @@ img {
   right: 0;
   bottom: 0;
   overflow: hidden;
+  z-index: 10;
+}
+
+/* --- Mode-based visibility control --- */
+/* Hide slide elements when in reading or workshop mode */
+body.reading-mode .slide-container,
+body.reading-mode .slide-nav,
+body.workshop-mode .slide-container,
+body.workshop-mode .slide-nav {
+  display: none !important;
+}
+
+/* Hide reading/workshop containers when NOT in their mode */
+body:not(.reading-mode) .reading-container {
+  display: none !important;
+}
+
+body:not(.workshop-mode) .workshop-container {
+  display: none !important;
 }
 
 .slide {
@@ -1023,7 +1042,7 @@ img {
   padding: calc(56px + var(--space-3xl)) var(--space-xl) var(--space-3xl);
 }
 
-.reading-container.active {
+body.reading-mode .reading-container {
   display: block;
 }
 
@@ -1590,7 +1609,7 @@ img {
   padding: calc(56px + var(--space-3xl)) var(--space-xl) var(--space-3xl);
 }
 
-.workshop-container.active {
+body.workshop-mode .workshop-container {
   display: block;
 }
 

@@ -153,48 +153,31 @@ class App {
   setMode(mode) {
     this.currentMode = mode;
 
-    const slideContainer = document.getElementById('slideContainer');
-    const slideNav = document.getElementById('slideNav');
-    const readingContainer = document.getElementById('readingContainer');
-    const workshopContainer = document.getElementById('workshopContainer');
-    
     const slideModeBtn = document.getElementById('slideModeBtn');
     const readingModeBtn = document.getElementById('readingModeBtn');
     const workshopModeBtn = document.getElementById('workshopModeBtn');
 
+    // Reset all body mode classes first
+    document.body.classList.remove('reading-mode', 'workshop-mode');
+
+    // Reset all toggle button states
+    if (slideModeBtn) slideModeBtn.classList.remove('active');
+    if (readingModeBtn) readingModeBtn.classList.remove('active');
+    if (workshopModeBtn) workshopModeBtn.classList.remove('active');
+
     if (mode === 'slide') {
-      document.body.classList.remove('reading-mode', 'workshop-mode');
-      if (slideContainer) slideContainer.style.display = '';
-      if (slideNav) slideNav.style.display = '';
-      if (readingContainer) readingContainer.classList.remove('active');
-      if (workshopContainer) workshopContainer.classList.remove('active');
+      // No body class needed — CSS hides reading/workshop by default
       if (slideModeBtn) slideModeBtn.classList.add('active');
-      if (readingModeBtn) readingModeBtn.classList.remove('active');
-      if (workshopModeBtn) workshopModeBtn.classList.remove('active');
     } else if (mode === 'reading') {
       document.body.classList.add('reading-mode');
-      document.body.classList.remove('workshop-mode');
-      if (slideContainer) slideContainer.style.display = 'none';
-      if (slideNav) slideNav.style.display = 'none';
-      if (readingContainer) readingContainer.classList.add('active');
-      if (workshopContainer) workshopContainer.classList.remove('active');
-      if (slideModeBtn) slideModeBtn.classList.remove('active');
       if (readingModeBtn) readingModeBtn.classList.add('active');
-      if (workshopModeBtn) workshopModeBtn.classList.remove('active');
 
       // Update progress based on scroll
       this.updateReadingProgress();
     } else if (mode === 'workshop') {
       document.body.classList.add('workshop-mode');
-      document.body.classList.remove('reading-mode');
-      if (slideContainer) slideContainer.style.display = 'none';
-      if (slideNav) slideNav.style.display = 'none';
-      if (readingContainer) readingContainer.classList.remove('active');
-      if (workshopContainer) workshopContainer.classList.add('active');
-      if (slideModeBtn) slideModeBtn.classList.remove('active');
-      if (readingModeBtn) readingModeBtn.classList.remove('active');
       if (workshopModeBtn) workshopModeBtn.classList.add('active');
-      
+
       const progressFill = document.getElementById('progressFill');
       if (progressFill) {
         progressFill.style.width = '100%';
@@ -398,16 +381,66 @@ class App {
     // Add tasks
     workshopData.tasks.forEach((task, idx) => {
       html += `
-        <div class="workshop-card" style="margin-bottom: var(--space-lg); background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: var(--space-xl); position: relative; overflow: hidden; backdrop-filter: blur(12px);">
+        <div class="workshop-card" style="margin-bottom: var(--space-xl); background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: var(--space-xl); position: relative; overflow: hidden; backdrop-filter: blur(12px);">
           <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--gradient-primary);"></div>
-          <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-md); color: var(--ts-blue-light); display: flex; align-items: center; gap: var(--space-sm);">
-            <span style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: rgba(49, 120, 198, 0.15); font-size: 0.9rem; color: var(--ts-blue-light); border: 1px solid rgba(49, 120, 198, 0.3);">${idx + 1}</span>
-            ${task.title}
-          </h3>
-          <div style="font-size: 0.98rem; line-height: 1.8; color: var(--text-primary); margin-bottom: var(--space-md);">${task.instruction}</div>
+          
+          <!-- Header: Title + Difficulty -->
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-md); flex-wrap: wrap; gap: var(--space-sm);">
+            <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--ts-blue-light); display: flex; align-items: center; gap: var(--space-sm); margin: 0;">
+              <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(49, 120, 198, 0.15); font-size: 0.95rem; color: var(--ts-blue-light); border: 1px solid rgba(49, 120, 198, 0.3); font-weight: 700;">${idx + 1}</span>
+              ${task.title}
+            </h3>
+            ${task.difficulty ? `<span style="font-size: 0.78rem; padding: 4px 12px; border-radius: var(--radius-full); background: rgba(255, 214, 0, 0.1); color: var(--ts-yellow); border: 1px solid rgba(255, 214, 0, 0.2); white-space: nowrap;">${task.difficulty}</span>` : ''}
+          </div>
+
+          <!-- Objective -->
+          ${task.objective ? `
+            <div style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: var(--space-lg); padding: var(--space-sm) var(--space-md); background: rgba(49, 120, 198, 0.06); border-radius: var(--radius-sm); border-left: 3px solid var(--ts-blue);">
+              🎯 <strong>จุดประสงค์:</strong> ${task.objective}
+            </div>
+          ` : ''}
+
+          <!-- Instructions -->
+          <div style="font-size: 0.98rem; line-height: 1.8; color: var(--text-primary); margin-bottom: var(--space-lg);">
+            <div style="font-weight: 600; margin-bottom: var(--space-sm); color: var(--text-primary);">📋 สิ่งที่ต้องทำ:</div>
+            ${task.instruction}
+          </div>
+
+          <!-- Starter Code -->
+          ${task.starterCode ? `
+            <div style="margin-bottom: var(--space-lg);">
+              <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: var(--space-sm); color: var(--ts-green); display: flex; align-items: center; gap: var(--space-sm);">
+                💻 โค้ดตั้งต้น (ให้คัดลอกไปเขียนต่อ):
+              </div>
+              <div class="code-block">
+                <div class="code-block__header">
+                  <div class="code-block__dots">
+                    <span class="code-block__dot"></span>
+                    <span class="code-block__dot"></span>
+                    <span class="code-block__dot"></span>
+                  </div>
+                  <span class="code-block__lang">${workshopData.fileName}</span>
+                  <button class="code-block__copy" onclick="navigator.clipboard.writeText(this.closest('.code-block').querySelector('code').textContent).then(() => { this.innerHTML = '✓ คัดลอกแล้ว'; this.classList.add('copied'); setTimeout(() => { this.innerHTML = '📋 คัดลอก'; this.classList.remove('copied'); }, 2000); })">📋 คัดลอก</button>
+                </div>
+                <pre><code class="language-typescript">${task.starterCode}</code></pre>
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Expected Output -->
+          ${task.expectedOutput ? `
+            <div style="margin-bottom: var(--space-md);">
+              <div style="font-weight: 600; font-size: 0.9rem; margin-bottom: var(--space-sm); color: var(--ts-cyan); display: flex; align-items: center; gap: var(--space-sm);">
+                🖥️ ผลลัพธ์ที่ควรได้ (ตัวอย่าง):
+              </div>
+              <div style="padding: var(--space-md) var(--space-lg); background: rgba(0, 0, 0, 0.4); border-radius: var(--radius-md); border: 1px solid rgba(0, 212, 255, 0.15); font-family: var(--font-code); font-size: 0.88rem; line-height: 1.8; color: var(--ts-cyan); white-space: pre-wrap;">${task.expectedOutput}</div>
+            </div>
+          ` : ''}
+
+          <!-- Hint -->
           ${task.hint ? `
             <div class="info-box info-box--tip" style="margin-top: var(--space-md); margin-bottom: 0;">
-              <div class="info-box__title">💡 คำแนะนำ (Hint)</div>
+              <div class="info-box__title">💡 คำแนะนำ</div>
               <div class="info-box__content">${task.hint}</div>
             </div>
           ` : ''}
