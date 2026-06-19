@@ -1580,6 +1580,55 @@ img {
   opacity: 1;
 }
 
+/* ============================================
+   WORKSHOP MODE
+   ============================================ */
+.workshop-container {
+  display: none;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: calc(56px + var(--space-3xl)) var(--space-xl) var(--space-3xl);
+}
+
+.workshop-container.active {
+  display: block;
+}
+
+.workshop-header {
+  margin-bottom: var(--space-3xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.workshop-header__unit {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-full);
+  background: rgba(49, 120, 198, 0.15);
+  color: var(--ts-blue-light);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: var(--space-md);
+}
+
+.workshop-header__title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+}
+
+.workshop-header__desc {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+}
+
+.workshop-body {
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
 /* ---------- Print Styles ---------- */
 @media print {
   .topbar,
