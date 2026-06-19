@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทเรียน - การเขียนโปรแกรมคอมพิวเตอร์ (TypeScript)</title>
+  
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap">
+  
+  <!-- Prism.js CSS for Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <nav class="topbar">
+    <div class="topbar__left">
+      <a href="index.html" class="topbar__back" title="กลับหน้าแรก">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+      </a>
+      <button id="menuBtn" class="icon-btn" title="เมนูหน่วยเรียน">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <div class="topbar__info">
+        <span id="topbarUnitLabel" class="topbar__unit-label">หน่วยที่ 1</span>
+        <span id="topbarUnitTitle" class="topbar__unit-title">พื้นฐานการเขียนโปรแกรมและการเตรียมสภาพแวดล้อม</span>
+      </div>
+    </div>
+
+    <div class="topbar__center">
+      <span id="topbarSlideCounter" class="topbar__slide-counter">0 / 0</span>
+    </div>
+
+    <div class="topbar__right">
+      <div class="mode-toggle">
+        <button id="slideModeBtn" class="mode-toggle__btn active">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="9" y1="3" x2="9" y2="21"></line>
+          </svg>
+          สไลด์
+        </button>
+        <button id="readingModeBtn" class="mode-toggle__btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          อ่านบทเรียน
+        </button>
+      </div>
+      <button id="fullscreenBtn" class="icon-btn" title="เต็มจอ (F)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar">
+    <div id="progressFill" class="progress-bar__fill" style="width: 0%;"></div>
+  </div>
+
+  <!-- Sidebar (Unit Navigation) -->
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar__header">
+      <h2 class="sidebar__title">สารบัญหน่วยการเรียนรู้</h2>
+      <button id="sidebarClose" class="sidebar__close" title="ปิดเมนู">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <ul id="sidebarUnitList" class="sidebar__unit-list">
+      <!-- Generated dynamically by app.js -->
+    </ul>
+  </aside>
+
+  <!-- Slide Mode Container -->
+  <div id="slideContainer" class="slide-container">
+    <!-- Generated dynamically by slides.js -->
+  </div>
+
+  <!-- Slide Navigation Controls -->
+  <div id="slideNav" class="slide-nav">
+    <button id="prevBtn" class="slide-nav__btn" title="สไลด์ก่อนหน้า (Arrow Left)">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      <span>ก่อนหน้า</span>
+    </button>
+    <div id="slideCounter" class="slide-nav__counter">1 / 18</div>
+    <button id="nextBtn" class="slide-nav__btn" title="สไลด์ถัดไป (Arrow Right / Spacebar)">
+      <span>ถัดไป</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Reading Mode Container -->
+  <div id="readingContainer" class="reading-container">
+    <header class="reading-header">
+      <span id="readingUnitLabel" class="reading-header__unit">หน่วยที่ 1</span>
+      <h1 id="readingTitle" class="reading-header__title">พื้นฐานการเขียนโปรแกรมและการเตรียมสภาพแวดล้อม</h1>
+      <p id="readingDesc" class="reading-header__desc">รู้จัก TypeScript และเตรียมเครื่องมือสำหรับการพัฒนา</p>
+    </header>
+    
+    <div id="readingBody" class="reading-body">
+      <!-- Generated dynamically from slide content by app.js -->
+    </div>
+  </div>
+
+  <!-- Prism.js Scripts for Syntax Highlighting -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+
+  <!-- Unit Course Data Files -->
+  <script src="js/units/unit1.js"></script>
+  <script src="js/units/unit2.js"></script>
+  <script src="js/units/unit3.js"></script>
+  <script src="js/units/unit4.js"></script>
+  
+  <!-- Slide Engine and App Core Scripts -->
+  <script src="js/slides.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
