@@ -6,498 +6,518 @@ const unit5Data = [
   {
     type: 'title',
     icon: '📦',
-    title: 'หน่วยที่ 5<br><span class="gradient-text">อาร์เรย์และฟังก์ชัน<br>(Arrays & Functions)</span>',
-    subtitle: 'การเก็บข้อมูลแบบกลุ่มและการจัดระเบียบชุดคำสั่งเพื่อทำงานร่วมกัน'
-  },
-  {
-    type: 'content',
-    title: '📋 จุดประสงค์การเรียนรู้',
-    content: `
-      <ol>
-        <li>อธิบายความจำเป็นและความหมายของ Array และ Tuple ได้</li>
-        <li>ประกาศตัวแปรและเข้าถึงสมาชิกของ Array และ Tuple ได้ถูกต้อง</li>
-        <li>ใช้งานเมธอดจัดการ Array พื้นฐาน (push, pop, map, filter) ได้อย่างถูกต้อง</li>
-        <li>อธิบายความจำเป็น รูปแบบโครงสร้าง และการสร้างฟังก์ชันได้</li>
-        <li>กำหนด Parameters และระบุ Return Type ของฟังก์ชันได้ถูกต้อง</li>
-        <li>เขียนฟังก์ชันในรูปแบบ Arrow Function และแบบย่อได้</li>
-        <li>เขียนโปรแกรมประยุกต์ใช้งาน Array ร่วมกับ Function ในสถานการณ์จริงได้</li>
-      </ol>
-    `
+    title: 'หน่วยที่ 5<br><span class="gradient-text">Array & Function</span>',
+    subtitle: 'เรียนรู้การเก็บข้อมูลหลายชิ้นใน Array และการสร้าง Function เพื่อนำโค้ดมาใช้ซ้ำ — สำหรับผู้ไม่มีพื้นฐานเลย'
   },
   {
     type: 'split',
-    title: '🤔 ทำไมต้องมี Array?',
+    title: 'ทำไมต้องมี Array?',
     left: `
-      <p>สมมติว่าต้องการเก็บคะแนนของนักเรียน 5 คน ถ้าเขียนโปรแกรมทั่วไปเราต้องประกาศ 5 ตัวแปร:</p>
+      <p>ลองนึกภาพว่าเราต้องเก็บชื่อนักเรียน 5 คน ถ้าไม่มี Array เราต้องประกาศตัวแปรแยกกัน 5 ตัว:</p>
       <div class="code-block">
-        <pre><code class="language-typescript">let score1: number = 85;
-let score2: number = 90;
-let score3: number = 78;
-let score4: number = 92;
-let score5: number = 88;
-
-// ถ้ามีนักเรียน 100 คน? 😱
-// ต้องประกาศ score1 ถึง score100!
-// คำนวณหาผลรวมหรือคะแนนเฉลี่ยยากมาก</code></pre>
+        <pre><code class="language-typescript">let student1 = "สมชาย"
+let student2 = "สมหญิง"
+let student3 = "สมศักดิ์"
+let student4 = "สมปอง"
+let student5 = "สมฤดี"
+// 😱 แล้วถ้ามี 100 คน ต้องเขียน 100 บรรทัด!</code></pre>
       </div>
     `,
     right: `
-      <p><strong>ปัญหาในการทำซ้ำหรือคำนวณ:</strong></p>
-      <ul>
-        <li>โค้ดจะยาวและยากต่อการแก้ไข</li>
-        <li>ไม่สามารถนำข้อมูลมารันด้วยลูป (Loop) ได้ง่ายๆ</li>
-        <li>การประมวลผลข้อมูลร่วมกัน เช่น หาค่าเฉลี่ย จะยุ่งยากมาก</li>
-      </ul>
       <div class="info-box info-box--tip">
-        <div class="info-box__title">💡 ทางออก</div>
-        <div class="info-box__content">ใช้ <strong>Array (อาร์เรย์)</strong> เพื่อยุบตัวแปรทั้งหมดมารวมกันเป็นตัวแปรเดียว</div>
+        <div class="info-box__title">💡 Array แก้ปัญหานี้!</div>
+        <div class="info-box__content">
+          เราสามารถเก็บนักเรียนทุกคนในตัวแปรเดียว แล้ววนซ้ำหาหรือจัดการข้อมูลได้ง่ายมาก
+        </div>
+      </div>
+      <div class="code-block" style="margin-top: var(--space-md);">
+        <pre><code class="language-typescript">let students: string[] = ["สมชาย", "สมหญิง", "สมศักดิ์", "สมปอง", "สมฤดี"]
+// ✅ เก็บทั้งหมดในบรรทัดเดียว!</code></pre>
       </div>
     `
   },
   {
     type: 'content',
-    title: '📦 Array คืออะไร?',
-    icon: '📊',
+    title: 'Array คืออะไร',
+    icon: '🗃️',
     content: `
-      <p><strong>Array (อาร์เรย์ / แถวลำดับ)</strong> คือ ตัวแปรชนิดโครงสร้างที่ใช้สำหรับเก็บกลุ่มข้อมูลที่เป็น <strong>ชนิดเดียวกัน</strong> ไว้ในตัวแปรตัวเดียว</p>
-      <ul>
-        <li>เปรียบเสมือน <strong>"ตู้คอนเทนเนอร์"</strong> ที่มีกล่องย่อยเรียงต่อกันเป็นแถว</li>
-        <li>แต่ละช่องข้อมูลจะมี <strong>"ดัชนี (Index)"</strong> ประจำตัวเพื่อใช้อ้างอิงตำแหน่ง</li>
-        <li><strong>ดัชนีจะเริ่มต้นที่ 0 เสมอ</strong> ช่องที่สองคือ 1 ช่องที่สามคือ 2 ไปเรื่อยๆ</li>
-      </ul>
-      <div class="info-box info-box--info">
-        <div class="info-box__title">📝 โครงสร้างหน่วยความจำของ Array</div>
-        <div class="info-box__content" style="font-family: var(--font-code); text-align: center;">
-          [ index 0 ] ➔ "แอปเปิ้ล"<br>
-          [ index 1 ] ➔ "กล้วย"<br>
-          [ index 2 ] ➔ "ส้ม"<br>
-          (ความยาว / length = 3)
+      <p>Array คือ <strong style="color:var(--ts-blue-light)">ตู้ลิ้นชัก</strong> ที่มีหลายช่อง แต่ละช่องเก็บข้อมูล 1 ชิ้น โดยแต่ละช่องจะมี <strong style="color:var(--ts-blue-light)">หมายเลข (index)</strong> กำกับไว้ เริ่มนับจาก <code>0</code></p>
+      <table class="comparison-table" style="margin: var(--space-md) 0;">
+        <thead>
+          <tr>
+            <th>Index</th>
+            <th>0</th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--text-secondary);font-size:13px">ค่า</td>
+            <td>"สมชาย"</td>
+            <td>"สมหญิง"</td>
+            <td>"สมศักดิ์"</td>
+            <td>"สมปอง"</td>
+            <td>"สมฤดี"</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="info-box info-box--tip">
+        <div class="info-box__title">🔑 จำไว้!</div>
+        <div class="info-box__content">
+          Index เริ่มต้นที่ <code>0</code> เสมอ ไม่ใช่ 1<br>
+          ฉะนั้น สมาชิกคนแรกอยู่ที่ <code>index 0</code>, คนที่สองอยู่ที่ <code>index 1</code>
         </div>
       </div>
     `
   },
   {
     type: 'code',
-    title: 'การประกาศ Array ใน TypeScript',
-    subtitle: 'การกำหนดชนิดข้อมูลของอาร์เรย์ทำได้ 2 รูปแบบ',
-    code: `// รูปแบบที่ 1: ใช้เครื่องหมาย Type[] (แนะนำและนิยมมากที่สุด)
-let scores: number[] = [85, 90, 78, 92, 88];
-let names: string[] = ["สมชาย", "สมหญิง", "สมศรี"];
+    title: 'การประกาศ Array',
+    subtitle: 'รูปแบบพื้นฐานและการประกาศ Array ว่างเปล่า',
+    code: `// รูปแบบ: let ชื่อตัวแปร: ชนิดข้อมูล[] = [...]
 
-// รูปแบบที่ 2: ใช้รูปแบบ Generic Array (Array<Type>)
-let fruits: Array<string> = ["Apple", "Banana", "Orange"];
-let statusFlags: Array<boolean> = [true, false, true];
+let fruits: string[] = ["แอปเปิ้ล", "กล้วย", "มะม่วง"];
+let scores: number[] = [90, 85, 72, 95];
+let flags:  boolean[] = [true, false, true];
 
-// การสร้าง Array ว่างเปล่า
-let emptyArray: number[] = []; // หรือ new Array<number>()
-emptyArray.push(10); // เพิ่มข้อมูลในภายหลัง
-
-console.log("คะแนน:", scores);
-console.log("รายชื่อ:", names);`,
+// Array ว่างเปล่า (เตรียมไว้ก่อน)
+let cart: string[] = [];   // ตะกร้าสินค้าว่าง รอเพิ่มทีหลัง`,
     lang: 'typescript',
-    note: 'TypeScript จะบังคับว่าค่าภายใน Array จะต้องตรงตาม Type ที่กำหนดไว้เท่านั้น ไม่สามารถนำข้อมูลต่างชนิดมาใส่ปนกันได้'
+    note: 'อ่านแบบง่าย: <code>string[]</code> คือ "Array ของ string" — วงเล็บก้ามปู <code>[]</code> บอกว่าเป็น Array'
   },
   {
     type: 'code',
-    title: 'การเข้าถึงสมาชิกและการแก้ไขค่า',
+    title: 'การเข้าถึงและแก้ไขสมาชิก',
     subtitle: 'ใช้เครื่องหมายวงเล็บเหลี่ยม [index] ในการอ้างอิงตำแหน่ง',
     code: `let colors: string[] = ["แดง", "เขียว", "น้ำเงิน"];
 
-// 1. การเข้าถึงสมาชิกเพื่ออ่านค่า (Index เริ่มที่ 0)
-console.log(colors[0]); // "แดง"
-console.log(colors[2]); // "น้ำเงิน"
-console.log(colors[5]); // undefined (ไม่มีข้อมูลช่องนี้)
+console.log(colors[0]);  // "แดง"   ← ตัวแรก
+console.log(colors[1]);  // "เขียว" ← ตัวที่สอง
+console.log(colors[2]);  // "น้ำเงิน" ← ตัวที่สาม
 
-// 2. การแก้ไขค่าสมาชิกในช่องที่ระบุ
-colors[1] = "เหลือง"; 
-console.log(colors); // ["แดง", "เหลือง", "น้ำเงิน"]
+// อยากรู้ว่ามีสมาชิกกี่ตัว?
+console.log(colors.length);  // 3
 
-// 3. การตรวจสอบขนาดความยาวของ Array
-console.log("จำนวนสีทั้งหมด:", colors.length); // 3
-
-// 4. การดึงสมาชิกตัวสุดท้ายของ Array
-let lastColor = colors[colors.length - 1];
-console.log("สีสุดท้าย:", lastColor); // "น้ำเงิน"`,
-    lang: 'typescript'
+// แก้ไขค่าใน Array
+colors[1] = "เหลือง";   // เปลี่ยน "เขียว" เป็น "เหลือง"
+console.log(colors);    // ["แดง", "เหลือง", "น้ำเงิน"]`,
+    lang: 'typescript',
+    note: '<strong>ระวัง Index เกิน!</strong> ถ้าเรียก <code>colors[5]</code> ในขณะที่มีแค่ 3 สมาชิก จะได้ <code>undefined</code> — ไม่มี error แต่ค่าจะว่าง'
   },
   {
     type: 'code',
-    title: 'Tuple ใน TypeScript',
-    subtitle: 'อาร์เรย์โครงสร้างพิเศษที่ระบุชนิดข้อมูลแต่ละตำแหน่งได้',
-    code: `// การประกาศ Tuple กำหนดขนาดและชนิดข้อมูลในแต่ละตำแหน่งคงที่
-let student: [string, number, boolean];
+    title: 'Tuple',
+    subtitle: 'Array พิเศษที่กำหนดชนิดข้อมูลแต่ละช่องได้แน่นอน',
+    code: `// Array ธรรมดา — ทุกช่องต้องเป็น string
+let arr: string[] = ["สมชาย", "20"];
 
-// กำหนดค่าให้ตรงตำแหน่งและชนิดข้อมูลที่ประกาศไว้
-student = ["สมศักดิ์", 20, true]; // [ชื่อ, อายุ, ผ่านเกณฑ์หรือไม่]
+// Tuple — ช่องที่ 1 เป็น string, ช่องที่ 2 เป็น number
+let person: [string, number] = ["สมชาย", 20];
 
-// อ่านข้อมูล
-console.log("ชื่อ:", student[0]); // "สมศักดิ์" (Type: string)
-console.log("อายุ:", student[1]); // 20 (Type: number)
+console.log(person[0]);  // "สมชาย"
+console.log(person[1]);  // 20
 
-// ข้อควรระวัง: สลับชนิดข้อมูลหรือสลับตำแหน่งไม่ได้!
-// student = [20, "สมศักดิ์", true]; // ❌ Error! ชนิดข้อมูลไม่ตรงตามลำดับตำแหน่ง
-
-// ตัวอย่างงานจริง: การเก็บพิกัดแผนที่ (Latitude, Longitude)
-const coordinate: [number, number] = [13.7563, 100.5018];`,
+// ตัวอย่างการใช้งาน Tuple
+let coordinate: [number, number] = [13.7563, 100.5018];  // lat, lng ของกรุงเทพ
+let product:    [string, number, boolean] = ["กาแฟ", 65, true];  // ชื่อ, ราคา, มีสินค้า`,
     lang: 'typescript',
-    note: 'Tuple เหมาะสำหรับการรวบรวมข้อมูลต่างชนิดที่มีจำนวนจำกัดและมีรูปแบบที่แน่นอน'
+    note: '<strong>Array vs Tuple:</strong> Array ทุกช่องเป็นชนิดเดียวกัน เช่น <code>number[]</code> ส่วน Tuple แต่ละช่องเป็นคนละชนิดได้ เช่น <code>[string, number, boolean]</code>'
   },
   {
     type: 'code',
     title: 'เมธอดจัดการ Array: push() และ pop()',
-    subtitle: 'การเพิ่มและลบข้อมูลที่ท้ายสุดของอาร์เรย์',
-    code: `let playlist: string[] = ["เพลงที่ 1", "เพลงที่ 2"];
+    subtitle: 'การเพิ่มและลบข้อมูลที่ท้ายสุดของ Array',
+    code: `// push() — เพิ่มสมาชิกท้าย Array
+let cart: string[] = ["ขนมปัง", "นม"];
 
-// 1. push() — นำสมาชิกใหม่ไปต่อท้ายสุดของ Array
-playlist.push("เพลงที่ 3");
-playlist.push("เพลงที่ 4");
-console.log("หลัง push:", playlist); 
-// ผลลัพธ์: ["เพลงที่ 1", "เพลงที่ 2", "เพลงที่ 3", "เพลงที่ 4"]
+cart.push("ไข่");
+console.log(cart);   // ["ขนมปัง", "นม", "ไข่"]
 
-// 2. pop() — ดึงสมาชิกตัวสุดท้ายออกจาก Array และคืนค่านั้นมา
-let removedTrack = playlist.pop();
-console.log("เพลงที่ถูกเอาออก:", removedTrack); // "เพลงที่ 4"
-console.log("หลัง pop:", playlist); 
-// ผลลัพธ์: ["เพลงที่ 1", "เพลงที่ 2", "เพลงที่ 3"]`,
+cart.push("กาแฟ");
+console.log(cart);   // ["ขนมปัง", "นม", "ไข่", "กาแฟ"]
+
+// pop() — ลบสมาชิกตัวสุดท้ายออก
+let stack: string[] = ["A", "B", "C"];
+
+let removed = stack.pop();
+console.log(removed);  // "C"  ← ค่าที่ถูกเอาออก
+console.log(stack);    // ["A", "B"]`,
     lang: 'typescript',
-    note: 'ทั่งสองเมธอดนี้จะทำการแก้ไข Array ดั้งเดิม (Mutate) โดยตรง'
+    note: 'เปรียบกับกระเป๋า: <code>push()</code> = ยัดของเข้ากระเป๋า, <code>pop()</code> = หยิบของออกจากกระเป๋า (หยิบชิ้นสุดท้ายออกมาเสมอ)'
   },
   {
     type: 'code',
     title: 'เมธอดจัดการ Array: map()',
-    subtitle: 'การแปลงข้อมูลจาก Array เดิมเพื่อสร้างเป็น Array ใหม่',
-    code: `let numbers: number[] = [1, 2, 3, 4, 5];
+    subtitle: 'การแปลงทุกสมาชิกใน Array เพื่อสร้างเป็น Array ใหม่ที่มีจำนวนสมาชิกเท่าเดิม',
+    code: `let prices: number[] = [100, 200, 300];
 
-// ใช้ map() เพื่อคำนวณเลขยกกำลังสองของทุกสมาชิก
-let squared: number[] = numbers.map(function(num) {
-  return num * num;
-});
-console.log("เดิม:", numbers);  // [1, 2, 3, 4, 5]
-console.log("ใหม่:", squared);  // [1, 4, 9, 16, 25]
+// บวก VAT 7% ทุกราคา
+let withVat = prices.map(price => price * 1.07);
 
-// แปลงรูปแบบข้อมูล เช่น แปลงตัวเลขเป็นข้อความบาทไทย
-let prices: number[] = [100, 250, 499];
-let formattedPrices: string[] = prices.map(price => \`\${price} บาท\`);
-console.log(formattedPrices); // ["100 บาท", "250 บาท", "499 บาท"]`,
+console.log(withVat);   // [107, 214, 321]
+console.log(prices);    // [100, 200, 300]  ← ของเดิมยังอยู่!
+
+// ตัวอย่างเพิ่มเติม: เพิ่มคำทักทายหน้าชื่อทุกคน
+let names: string[] = ["สมชาย", "สมหญิง", "สมศักดิ์"];
+let greetings = names.map(name => \`สวัสดี, \${name}!\`);
+
+console.log(greetings); // ["สวัสดี, สมชาย!", "สวัสดี, สมหญิง!", "สวัสดี, สมศักดิ์!"]`,
     lang: 'typescript',
-    note: 'เมธอด <code>map()</code> จะไม่ไปยุ่งหรือเปลี่ยนแปลงข้อมูลใน Array ดั้งเดิม แต่จะส่งออกเป็น Array ใหม่ที่ผ่านการแปลงผลแล้ว'
+    note: '<code>map()</code> จะไม่เปลี่ยนข้อมูลใน Array ดั้งเดิม แต่จะส่งออกเป็น Array ใหม่ที่ผ่านการแปลงแล้ว'
   },
   {
     type: 'code',
     title: 'เมธอดจัดการ Array: filter()',
-    subtitle: 'คัดกรองเฉพาะสมาชิกที่ตรงตามเงื่อนไขที่กำหนด',
-    code: `let scores: number[] = [45, 78, 92, 50, 64, 38];
+    subtitle: 'การกรองสมาชิกที่ผ่านเงื่อนไขออกมาเป็น Array ใหม่',
+    code: `let scores: number[] = [45, 78, 92, 55, 88, 30];
 
-// คัดเฉพาะคะแนนที่สอบผ่าน (ตั้งแต่ 50 คะแนนขึ้นไป)
-let passedScores: number[] = scores.filter(function(score) {
-  return score >= 50;
-});
-console.log("ผ่าน:", passedScores); // [78, 92, 50, 64]
+// กรองเฉพาะคนที่ผ่าน (>= 60)
+let passed = scores.filter(score => score >= 60);
 
-// คัดเฉพาะคำที่มีความยาวตัวอักษรมากกว่า 5 ตัวขึ้นไป
-let words: string[] = ["cat", "elephant", "dog", "giraffe"];
-let longWords: string[] = words.filter(word => word.length > 5);
-console.log("คำศัพท์ยาว:", longWords); // ["elephant", "giraffe"]`,
+console.log(passed);    // [78, 92, 88]
+console.log(scores);    // [45, 78, 92, 55, 88, 30]  ← ของเดิมไม่เปลี่ยน
+
+// filter กับ string: กรองเฉพาะที่ขึ้นต้นด้วย "ก"
+let fruits: string[] = ["แอปเปิ้ล", "กล้วย", "กีวี", "แคนตาลูป"];
+let gFruits = fruits.filter(f => f.startsWith("ก"));
+console.log(gFruits);   // ["กล้วย", "กีวี", "แคนตาลูป"]`,
     lang: 'typescript',
-    note: 'ฟังก์ชันใน <code>filter()</code> จะต้องคืนค่ากลับเป็น Boolean (true คือเก็บไว้ / false คือตัดทิ้ง)'
+    note: 'ฟังก์ชันใน <code>filter()</code> จะต้องคืนค่ากลับเป็น Boolean (true คือเก็บไว้ / false คือคัดทิ้ง)'
   },
   {
     type: 'content',
-    title: '📋 สรุปการจัดการ Array ที่พบบ่อย',
-    icon: '💡',
+    title: 'สรุปการจัดการ Array',
     content: `
-      <table class="comparison-table">
-        <tr>
-          <th>คำสั่ง/เมธอด</th>
-          <th>หน้าที่</th>
-          <th>ส่งผลต่ออาร์เรย์เดิมหรือไม่</th>
-        </tr>
-        <tr>
-          <td><code>push(x)</code></td>
-          <td>เพิ่มข้อมูล <code>x</code> ต่อท้ายอาร์เรย์</td>
-          <td><strong>แก้ไขอาร์เรย์เดิม</strong> (Mutated)</td>
-        </tr>
-        <tr>
-          <td><code>pop()</code></td>
-          <td>ดึงข้อมูลตัวสุดท้ายสุดออก</td>
-          <td><strong>แก้ไขอาร์เรย์เดิม</strong> (Mutated)</td>
-        </tr>
-        <tr>
-          <td><code>shift()</code></td>
-          <td>ดึงข้อมูลตัวแรกสุดด้านหน้าออก</td>
-          <td><strong>แก้ไขอาร์เรย์เดิม</strong> (Mutated)</td>
-        </tr>
-        <tr>
-          <td><code>unshift(x)</code></td>
-          <td>เพิ่มข้อมูล <code>x</code> เข้าที่หน้าสุดของอาร์เรย์</td>
-          <td><strong>แก้ไขอาร์เรย์เดิม</strong> (Mutated)</td>
-        </tr>
-        <tr>
-          <td><code>map()</code></td>
-          <td>แปลงสมาชิกทุกตัวเป็นค่าใหม่</td>
-          <td>สร้างอาร์เรย์ขึ้นมาใหม่</td>
-        </tr>
-        <tr>
-          <td><code>filter()</code></td>
-          <td>กรองเฉพาะข้อมูลที่ผ่านเงื่อนไข</td>
-          <td>สร้างอาร์เรย์ขึ้นมาใหม่</td>
-        </tr>
-      </table>
+      <div class="method-grid">
+        <div class="method-card">
+          <div class="method-name">.push()</div>
+          <div class="method-desc">เพิ่มสมาชิกท้าย Array</div>
+        </div>
+        <div class="method-card">
+          <div class="method-name">.pop()</div>
+          <div class="method-desc">ลบสมาชิกตัวสุดท้าย</div>
+        </div>
+        <div class="method-card">
+          <div class="method-name">.map()</div>
+          <div class="method-desc">แปลงทุกสมาชิก → Array ใหม่</div>
+        </div>
+        <div class="method-card">
+          <div class="method-name">.filter()</div>
+          <div class="method-desc">กรองสมาชิกตามเงื่อนไข</div>
+        </div>
+        <div class="method-card">
+          <div class="method-name">.length</div>
+          <div class="method-desc">ดูจำนวนสมาชิก</div>
+        </div>
+        <div class="method-card">
+          <div class="method-name">[index]</div>
+          <div class="method-desc">ดึงค่าตาม index</div>
+        </div>
+      </div>
+      <div class="code-block" style="margin-top: var(--space-lg);">
+        <pre><code class="language-typescript">let nums: number[] = [3, 1, 4, 1, 5];
+nums.push(9);                              // [3, 1, 4, 1, 5, 9]
+nums.pop();                               // [3, 1, 4, 1, 5]
+let doubled = nums.map(n => n * 2);       // [6, 2, 8, 2, 10]
+let big     = nums.filter(n => n > 3);   // [4, 5]</code></pre>
+      </div>
     `
   },
   {
     type: 'content',
-    title: '⚙️ Function คืออะไร?',
-    icon: '⚡',
+    title: 'Function คืออะไร',
+    icon: '⚙️',
     content: `
-      <p><strong>Function (ฟังก์ชัน / ฟังก์ชันการทำงาน)</strong> คือ ชุดคำสั่งที่ถูกรวมเข้าไว้ด้วยกันและตั้งชื่อเอาไว้ เพื่อให้เรียกใช้งานซ้ำๆ ได้โดยไม่ต้องเขียนโค้ดเดิมซ้ำใหม่</p>
-      <ul>
-        <li>เปรียบเสมือน <strong>"เครื่องจักรในโรงงาน"</strong>: ป้อนวัตถุดิบ (Input) ➔ ผ่านขั้นตอนแปรรูป ➔ ส่งสินค้าสำเร็จรูปออกมา (Output)</li>
-        <li>ช่วยให้โปรแกรมมีความเป็นระเบียบ แบ่งสัดส่วนหน้าที่ชัดเจน (Modularity)</li>
-        <li>ง่ายต่อการดีบัก ตรวจสอบข้อผิดพลาด และซ่อมบำรุงในอนาคต</li>
-      </ul>
-      <div class="info-box info-box--info">
-        <div class="info-box__title">📌 องค์ประกอบสำคัญของฟังก์ชัน</div>
+      <p>Function คือ <strong style="color:var(--ts-yellow)">สูตรที่เก็บไว้</strong> — เขียนครั้งเดียว เรียกใช้ได้กี่ครั้งก็ได้</p>
+      <p>ลองนึกภาพ <strong>เครื่องชงกาแฟ</strong>: เราตั้งโปรแกรมไว้ แล้วแค่กดปุ่ม — เครื่องจะทำทุกขั้นตอนให้เอง</p>
+      <div class="info-box info-box--info" style="margin-top: var(--space-md);">
+        <div class="info-box__title">ทำไมต้องใช้ Function?</div>
         <div class="info-box__content">
-          1. <strong>Function Name</strong>: ชื่อของฟังก์ชันสำหรับใช้เรียกงาน<br>
-          2. <strong>Parameters (Input)</strong>: ค่าที่ส่งเข้ามาประมวลผล (มีหรือไม่มีก็ได้)<br>
-          3. <strong>Body</strong>: โค้ดคำสั่งต่างๆ ที่ดำเนินการขั้นตอนภายใน<br>
-          4. <strong>Return Type (Output)</strong>: ชนิดข้อมูลของผลลัพธ์ที่จะตอบกลับ (มีหรือไม่มีก็ได้)
+          <ul>
+            <li>ไม่ต้องเขียนโค้ดซ้ำหลายครั้ง</li>
+            <li>แก้ไขที่เดียว ใช้งานได้ทุกที่</li>
+            <li>โค้ดอ่านง่าย เข้าใจได้ทันที</li>
+            <li>แบ่งงานเป็นชิ้นเล็กๆ จัดการง่าย</li>
+          </ul>
         </div>
       </div>
     `
   },
   {
     type: 'code',
-    title: 'การสร้าง Function ใน TypeScript',
-    subtitle: 'การประกาศฟังก์ชันพื้นฐานและวิธีเรียกใช้งาน',
-    code: `// การประกาศฟังก์ชัน (Function Declaration)
-// function ชื่อฟังก์ชัน(พารามิเตอร์: ชนิดข้อมูล): ชนิดผลลัพธ์
-function displayGreeting(): void {
-  console.log("ยินดีต้อนรับเข้าสู่วิชา TypeScript! 👋");
+    title: 'การสร้าง Function',
+    subtitle: 'โครงสร้างการเขียนฟังก์ชันและการเรียกใช้เบื้องต้น',
+    code: `// Function ง่ายที่สุด — ไม่มี parameter, ไม่ return
+function sayHello() {
+  console.log("สวัสดีครับ!");
 }
 
-// การเรียกใช้งานฟังก์ชัน (Function Invocation)
-displayGreeting(); // พิมพ์ "ยินดีต้อนรับเข้าสู่วิชา TypeScript! 👋"
-
-// ฟังก์ชันที่มีการส่งผ่านค่า (Parameters) และส่งค่ากลับ (Return Value)
-function calculateArea(width: number, height: number): number {
-  let area: number = width * height;
-  return area; // คืนค่าตัวเลขผลลัพธ์กลับไป
-}
-
-// รับค่าผลลัพธ์กลับมาเก็บไว้ในตัวแปร
-let myRoomArea: number = calculateArea(4, 5);
-console.log("พื้นที่ห้อง:", myRoomArea, "ตร.ม."); // 20 ตร.ม.`,
-    lang: 'typescript'
-  },
-  {
-    type: 'code',
-    title: 'เจาะลึก Parameter ของฟังก์ชัน',
-    subtitle: 'การใช้ Optional Parameter (?) และ Default Parameter',
-    code: `// 1. Optional Parameter (?) — พารามิเตอร์เสริมที่จะส่งหรือไม่ส่งก็ได้
-function showProfile(name: string, age?: number): string {
-  if (age) {
-    return \`ชื่อ: \${name}, อายุ: \${age} ปี\`;
-  }
-  return \`ชื่อ: \${name} (ไม่ระบุอายุ)\`;
-}
-console.log(showProfile("สมชาย", 25)); // "ชื่อ: สมชาย, อายุ: 25 ปี"
-console.log(showProfile("สมหญิง"));     // "ชื่อ: สมหญิง (ไม่ระบุอายุ)"
-
-// 2. Default Parameter — กำหนดค่าเริ่มต้นอัตโนมัติหากไม่มีการส่งค่ามา
-function registerUser(username: string, role: string = "Student"): void {
-  console.log(\`บัญชีผู้ใช้: \${username} [ตำแหน่ง: \${role}]\`);
-}
-registerUser("prakaidao");          // บัญชีผู้ใช้: prakaidao [ตำแหน่ง: Student]
-registerUser("admin_pp", "Teacher"); // บัญชีผู้ใช้: admin_pp [ตำแหน่ง: Teacher]`,
+sayHello();   // เรียกใช้
+sayHello();   // เรียกซ้ำได้`,
     lang: 'typescript',
-    note: 'หมายเหตุ: พารามิเตอร์ที่เป็นแบบทางเลือก (Optional) จะต้องประกาศไว้หลังสุดเสมอ'
+    note: 'โครงสร้างพื้นฐาน: <code>function ชื่อFunction(parameter) { // โค้ดที่ต้องการรัน }</code>'
   },
   {
     type: 'code',
-    title: 'ทำความเข้าใจ Return Type',
-    subtitle: 'การบอกว่าฟังก์ชันจะส่งผลลัพธ์เป็นชนิดใดกลับไป',
-    code: `// 1. คืนค่าเป็นตัวเลข (number)
-function sum(a: number, b: number): number {
+    title: 'Parameter (พารามิเตอร์)',
+    subtitle: 'การรับข้อมูลเข้าของฟังก์ชัน และ Default Parameter',
+    code: `// มี 1 parameter
+function greet(name: string) {
+  console.log(\`สวัสดี, \${name}!\`);
+}
+greet("มานะ");    // "สวัสดี, มานะ!"
+
+// มี 2 parameters
+function add(a: number, b: number) {
+  console.log(a + b);
+}
+add(10, 5);      // 15
+
+// Parameter ค่าเริ่มต้น (Default Parameter)
+function greetDefault(name: string = "แขกผู้มาเยือน") {
+  console.log(\`สวัสดี, \${name}!\`);
+}
+greetDefault("สมชาย");  // "สวัสดี, สมชาย!"
+greetDefault();          // "สวัสดี, แขกผู้มาเยือน!"`,
+    lang: 'typescript',
+    note: 'Parameter คือช่องรับข้อมูลเข้าฟังก์ชัน เปรียบเหมือนช่องใส่วัตถุดิบในเครื่องทำอาหาร'
+  },
+  {
+    type: 'code',
+    title: 'Return Type',
+    subtitle: 'การคืนค่าผลลัพธ์จากฟังก์ชัน',
+    code: `function add(a: number, b: number): number {
   return a + b;
 }
 
-// 2. คืนค่าเป็นตัวอักษรข้อความ (string)
-function uppercaseText(txt: string): string {
-  return txt.toUpperCase();
-}
+let result = add(10, 20);
+console.log(result);   // 30
 
-// 3. คืนค่าเป็นจริง/เท็จ (boolean)
+// ตัวอย่างหลายรูปแบบ
 function isAdult(age: number): boolean {
   return age >= 18;
 }
 
-// 4. ไม่คืนค่าใดๆ กลับเลย (void)
-function logWarning(msg: string): void {
-  console.warn("⚠️ แจ้งเตือน:", msg);
-  // ไม่ต้องใช้คำสั่ง return
+function fullName(first: string, last: string): string {
+  return \`\${first} \${last}\`;
 }
 
-let checkPass: boolean = isAdult(15); // false`,
-    lang: 'typescript'
-  },
-  {
-    type: 'code',
-    title: 'Arrow Function — ฟังก์ชันลูกศร',
-    subtitle: 'ไวยากรณ์ฟังก์ชันสมัยใหม่ที่เขียนกระชับขึ้น',
-    code: `// 1. ฟังก์ชันแบบปกติ (Regular Function)
-const multiplyNormal = function (x: number, y: number): number {
-  return x * y;
-};
-
-// 2. ฟังก์ชันแบบ Arrow (ใช้ => แทนคีย์เวิร์ด function)
-const multiplyArrow = (x: number, y: number): number => {
-  return x * y;
-};
-
-// วิธีเรียกใช้งานใช้งานได้เหมือนกัน
-console.log(multiplyNormal(5, 4)); // 20
-console.log(multiplyArrow(5, 4));  // 20
-
-// ตัวอย่าง Arrow Function ไม่มีพารามิเตอร์
-const sayHello = (): void => console.log("สวัสดีครับ");
-sayHello();`,
+console.log(isAdult(20));             // true
+console.log(fullName("สมชาย", "ใจดี")); // "สมชาย ใจดี"`,
     lang: 'typescript',
-    note: 'นิยมใช้มากในการทำงานร่วมกับ Array Methods และ React framework'
+    note: 'ถ้า Function แค่ทำงาน ไม่ส่งค่ากลับ ให้ระบุชนิดส่งคืนเป็น <code>void</code>'
   },
   {
     type: 'code',
-    title: 'Function แบบย่อ (Shorthand Arrow)',
-    subtitle: 'ลดรูปวงเล็บปีกกาและ return หากมีคำสั่งบรรทัดเดียว',
-    code: `// หากในตัวฟังก์ชันมีเพียงแค่คำสั่งส่งกลับค่าบรรทัดเดียว 
-// สามารถลบเครื่องหมายปีกกา {} และคีย์เวิร์ด return ออกได้เลย
-
-// แบบเต็ม
-const add = (a: number, b: number): number => {
-  return a + b;
-};
-
-// แบบย่อ (Shorthand)
-const addShort = (a: number, b: number): number => a + b;
-
-console.log(addShort(10, 20)); // 30
-
-// ตัวอย่างประยุกต์ร่วมกับเงื่อนไขย่อ (Ternary Operator)
-const checkStatus = (score: number): string => score >= 50 ? "ผ่าน" : "ตก";
-console.log(checkStatus(72)); // "ผ่าน"`,
-    lang: 'typescript'
-  },
-  {
-    type: 'code',
-    title: 'การใช้งาน Array ร่วมกับ Function',
-    subtitle: 'การส่งผ่านอาร์เรย์เข้าไปจัดการและรับกลับจากฟังก์ชัน',
-    code: `// ฟังก์ชันหาค่าเฉลี่ยจากอาร์เรย์ของตัวเลข
-function getAverage(numbersList: number[]): number {
-  if (numbersList.length === 0) return 0;
-  
-  let total = 0;
-  for (let num of numbersList) {
-    total += num;
-  }
-  return total / numbersList.length;
+    title: 'Arrow Function',
+    subtitle: 'การเขียนฟังก์ชันด้วยเครื่องหมายลูกศร =>',
+    code: `// 1. Function ธรรมดา
+function square1(n: number): number {
+  return n * n;
 }
 
-let classScores: number[] = [80, 75, 90, 85];
-let averageResult: number = getAverage(classScores);
-console.log("คะแนนเฉลี่ยในห้องเรียน:", averageResult); // 82.5
-
-// ฟังก์ชันหาชื่อที่ยาวที่สุดในอาร์เรย์
-const getLongestName = (names: string[]): string => {
-  return names.reduce((longest, current) => 
-    current.length > longest.length ? current : longest, ""
-  );
+// 2. Arrow Function
+const square2 = (n: number): number => {
+  return n * n;
 };
-console.log(getLongestName(["สมศรี", "วิทยา", "ประไพดาว"])); // "ประไพดาว"`,
-    lang: 'typescript'
+
+// 3. Arrow สั้นที่สุด (Shorthand)
+const square3 = (n: number): number => n * n;
+
+console.log(square3(5));   // 25`,
+    lang: 'typescript',
+    note: 'ไวยากรณ์สมัยใหม่ที่เขียนสั้นลง นิยมอย่างมากใน TypeScript/ES6'
   },
   {
     type: 'code',
-    title: 'ตัวอย่างงานจริง: ระบบรายชื่อนักเรียน',
-    subtitle: 'การสร้างฟังก์ชันจัดการอาร์เรย์เก็บข้อมูลนักเรียน',
-    code: `// ระบบจำลองฐานข้อมูลรายชื่อนักเรียนด้วย Array ของ Object
-interface Student {
-  id: number;
-  name: string;
-  major: string;
+    title: 'Shorthand Arrow Function',
+    subtitle: 'รูปแบบการย่อฟังก์ชันลูกศรแบบต่างๆ',
+    code: `// 1 parameter
+const double = (n: number) => n * 2;
+
+// ไม่มี parameter — ใส่วงเล็บว่าง
+const hi = () => console.log("สวัสดี");
+
+// หลาย parameters — ต้องมีวงเล็บ
+const multiply = (a: number, b: number) => a * b;
+
+// return หลายบรรทัด — ต้องมีปีกกา {} และคำสั่ง return
+const gradeMsg = (score: number) => {
+  if (score >= 80) return "ดีมาก";
+  if (score >= 60) return "ผ่าน";
+  return "ไม่ผ่าน";
+};`,
+    lang: 'typescript',
+    note: 'หากในฟังก์ชันมีโค้ดเพียงบรรทัดเดียวที่ทำการ return สามารถตัดปีกกาและคำสั่ง return ออกได้'
+  },
+  {
+    type: 'code',
+    title: 'Array + Function',
+    subtitle: 'การทำงานร่วมกันอย่างมีพลังของ Array และ Function',
+    code: `let scores: number[] = [45, 78, 92, 55, 88];
+
+// Function ตรวจว่าผ่านหรือไม่
+const isPassed = (score: number) => score >= 60;
+
+// Function แปลงคะแนนเป็นเกรด
+const toGrade = (score: number): string => {
+  if (score >= 80) return "A";
+  if (score >= 70) return "B";
+  if (score >= 60) return "C";
+  return "F";
+};
+
+// นำมาใช้งานร่วมกัน
+let passed = scores.filter(isPassed);         // [78, 92, 88]
+let grades = scores.map(toGrade);             // ["F","B","A","F","A"]
+
+console.log("ผ่าน:", passed);
+console.log("เกรด:", grades);`,
+    lang: 'typescript',
+    note: 'การส่งผ่าน Function เข้าไปประมวลผลข้อมูลใน Array Methods ช่วยให้โค้ดสะอาดและสั้นลงมาก'
+  },
+  {
+    type: 'code',
+    title: 'โปรเจกต์จริง #1: ระบบรายชื่อนักเรียน',
+    subtitle: 'ระบบจัดการรายชื่อ ค้นหา และเฉลี่ยเกรดนักเรียน',
+    code: `type Student = {
+  id:    number;
+  name:  string;
+  score: number;
 }
 
-let studentsDatabase: Student[] = [
-  { id: 101, name: "กฤษณะ", major: "IT" },
-  { id: 102, name: "นารีรัตน์", major: "IT" }
+let students: Student[] = [
+  { id: 1, name: "สมชาย",  score: 85 },
+  { id: 2, name: "สมหญิง", score: 72 },
+  { id: 3, name: "สมศักดิ์",score: 58 },
+  { id: 4, name: "สมปอง",  score: 91 },
 ];
 
-// ฟังก์ชันเพิ่มนักเรียนใหม่
-function addStudent(id: number, name: string, major: string): void {
-  studentsDatabase.push({ id, name, major });
-  console.log(\`✅ เพิ่ม \${name} เข้าระบบเรียบร้อย\`);
+// เพิ่มนักเรียนใหม่
+function addStudent(name: string, score: number): void {
+  const newStudent: Student = {
+    id: students.length + 1,
+    name,
+    score
+  };
+  students.push(newStudent);
+  console.log(\`เพิ่ม \${name} สำเร็จ!\`);
 }
 
-// ฟังก์ชันค้นหานักเรียนตามแผนกสาขาวิชา
-const getStudentsByMajor = (majorName: string): Student[] => {
-  return studentsDatabase.filter(std => std.major === majorName);
+// แปลงคะแนนเป็นเกรด
+const getGrade = (score: number): string => {
+  if (score >= 80) return "A";
+  if (score >= 70) return "B";
+  if (score >= 60) return "C";
+  return "F";
 };
 
-// ทดสอบระบบ
-addStudent(103, "วิชาญ", "BC");
-addStudent(104, "ชลิตา", "IT");
+// แสดงนักเรียนทั้งหมด
+function showAll(): void {
+  students.map(s => {
+    console.log(\`\${s.id}. \${s.name} — คะแนน: \${s.score} เกรด: \${getGrade(s.score)}\`);
+  });
+}
 
-console.log("นักเรียนสาขา IT ทั้งหมด:", getStudentsByMajor("IT"));`,
-    lang: 'typescript'
+// หาเฉลี่ยคะแนน
+function getAverage(): number {
+  const total = students.map(s => s.score).reduce((a, b) => a + b, 0);
+  return total / students.length;
+}
+
+addStudent("สมฤดี", 76);
+showAll();
+console.log("คะแนนเฉลี่ย:", getAverage());`,
+    lang: 'typescript',
+    note: 'ตัวอย่างของการรวมชนิดข้อมูล Object, Array และ Function เข้าด้วยกันในการทำระบบจริง'
   },
   {
     type: 'code',
-    title: 'ตัวอย่างงานจริง: ระบบร้านค้าและราคารวม',
-    subtitle: 'การวิเคราะห์และคำนวณราคาสินค้ารวมภาษีในระบบขายของ',
-    code: `interface CartItem {
-  productName: string;
+    title: 'โปรเจกต์จริง #2: ระบบร้านค้า',
+    subtitle: 'จำลองระบบตะกร้าสินค้าและการคำนวณราคารวม',
+    code: `type Product = {
+  id:    number;
+  name:  string;
   price: number;
-  quantity: number;
+  stock: number;
 }
 
-let shoppingCart: CartItem[] = [
-  { productName: "เม้าส์ไร้สาย", price: 350, quantity: 2 },
-  { productName: "คีย์บอร์ดกลไก", price: 1200, quantity: 1 },
-  { productName: "แผ่นรองเม้าส์ขนาดใหญ่", price: 150, quantity: 3 }
+type CartItem = {
+  productId: number;
+  qty:       number;
+}
+
+let products: Product[] = [
+  { id: 1, name: "กาแฟ",      price: 65,  stock: 50 },
+  { id: 2, name: "ชาเขียว",   price: 55,  stock: 30 },
+  { id: 3, name: "ขนมปัง",    price: 35,  stock: 20 },
+  { id: 4, name: "น้ำส้มคั้น", price: 80,  stock: 15 },
 ];
 
-// ฟังก์ชันคำนวณราคาสุทธิรวมในตะกร้าสินค้า
-const calculateCartTotal = (cart: CartItem[]): number => {
-  let subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-  // คำนวณภาษีมูลค่าเพิ่ม 7% (VAT)
-  let vat = subtotal * 0.07;
-  return subtotal + vat;
-};
+let cart: CartItem[] = [];
 
-let grandTotal: number = calculateCartTotal(shoppingCart);
-console.log(\`ราคารวมทั้งสิ้น (รวม VAT 7%): \${grandTotal.toFixed(2)} บาท\`);
-// ผลรวมย่อย: 700 + 1200 + 450 = 2350 บาท
-// ราคารวม VAT: 2350 + 164.5 = 2514.50 บาท`,
-    lang: 'typescript'
+const findProduct = (id: number) => products.find(p => p.id === id);
+
+// เพิ่มลงตะกร้า
+function addToCart(productId: number, qty: number): void {
+  const product = findProduct(productId);
+  if (!product || product.stock < qty) return;
+  cart.push({ productId, qty });
+}
+
+// คำนวณราคารวม
+function getTotal(): number {
+  return cart.map(item => {
+    const product = findProduct(item.productId);
+    return (product?.price ?? 0) * item.qty;
+  }).reduce((a, b) => a + b, 0);
+}
+
+addToCart(1, 2);
+addToCart(3, 1);
+console.log("ราคารวมทั้งสิ้น:", getTotal());`,
+    lang: 'typescript',
+    note: 'การใช้ <code>find()</code>, <code>map()</code> และ <code>reduce()</code> ช่วยย่นระยะเวลาเขียนโค้ดสำหรับระบบการเงิน'
   },
   {
     type: 'content',
-    title: '📝 สรุปหน่วยที่ 5',
-    icon: '✅',
+    title: 'สรุปภาพรวมหน่วยที่ 5',
+    icon: '🏆',
     content: `
-      <ul>
-        <li><strong>Array</strong> — เก็บข้อมูลชุดเป็นลำดับ อ้างอิง index เริ่มต้นที่ 0 ดึงความยาวด้วย <code>.length</code></li>
-        <li><strong>Tuple</strong> — อาร์เรย์ชนิดข้อมูลแบบคงที่และระบุตำแหน่งของ Type ไว้เฉพาะเจาะจง</li>
-        <li><strong>เมธอดหลัก</strong> — <code>push</code> เพิ่มท้าย, <code>pop</code> ดึงท้ายออก, <code>map</code> แปลงอาร์เรย์, <code>filter</code> กรองข้อมูล</li>
-        <li><strong>Function</strong> — การรวมกลุ่มโค้ดให้รันซ้ำได้ มีพารามิเตอร์ พารามิเตอร์เริ่มต้น และการกำหนดชนิดส่งกลับ (Return Type)</li>
-        <li><strong>Arrow Function</strong> — การใช้สัญลักษณ์ <code>=></code> เพื่อความกระชับในการเขียนฟังก์ชัน</li>
-      </ul>
-      <div class="info-box info-box--warning">
-        <div class="info-box__title">📌 แบบฝึกหัดหน่วยที่ 5</div>
-        <div class="info-box__content">
-          1. เขียนฟังก์ชันรับอาร์เรย์ตัวเลข แล้วคืนค่าตัวเลขที่มีค่ามากที่สุดในกลุ่มกลับมา (Max Value)<br>
-          2. เขียนโปรแกรมระบบจัดการสต็อกหนังสือ โดยสร้างฟังก์ชัน <code>addBook</code>, <code>searchBookByAuthor</code> ค้นหา และแสดงรายการทั้งหมด<br>
-          3. ใช้ <code>filter()</code> และ <code>map()</code> เพื่อกรองคะแนนนักเรียนที่ผ่าน (>= 50) และบวกคะแนนพิเศษให้ทุกคนเพิ่มคนละ 5 คะแนน
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="s-title">Array[]</div>
+          <div class="s-body">เก็บข้อมูลหลายชิ้นในตัวแปรเดียว เข้าถึงด้วย index ที่เริ่มจาก 0</div>
+        </div>
+        <div class="summary-item">
+          <div class="s-title">Tuple</div>
+          <div class="s-body">Array พิเศษที่กำหนดชนิดข้อมูลแต่ละช่องได้แน่นอน</div>
+        </div>
+        <div class="summary-item">
+          <div class="s-title">push / pop</div>
+          <div class="s-body">เพิ่มหรือลบสมาชิกจากท้าย Array</div>
+        </div>
+        <div class="summary-item">
+          <div class="s-title">map / filter</div>
+          <div class="s-body">แปลงข้อมูลทุกตัว หรือกรองข้อมูลตามเงื่อนไข</div>
+        </div>
+        <div class="summary-item">
+          <div class="s-title">Function</div>
+          <div class="s-body">ห่อโค้ดไว้ใช้ซ้ำ รับ parameter และ return ค่ากลับได้</div>
+        </div>
+        <div class="summary-item">
+          <div class="s-title">Arrow Function</div>
+          <div class="s-body">เขียน Function แบบสั้นกระชับ ด้วยสัญลักษณ์ =&gt;</div>
+        </div>
+      </div>
+      <div class="card tip" style="margin-top: 20px;">
+        <div class="tip-icon">🎯</div>
+        <div class="tip-body">
+          <strong>เคล็ดลับสู่ความเชี่ยวชาญ:</strong><br>
+          ลองนำ Array + Function มาสร้างโปรเจกต์เล็กๆ ของตัวเอง เช่น รายการสิ่งที่ต้องทำ, แคลคูเลเตอร์เกรด, หรือระบบจองตั๋ว — การฝึกทำจริงคือวิธีเรียนที่ดีที่สุด
         </div>
       </div>
     `
@@ -651,4 +671,3 @@ console.log("คะแนนหลังบวกเพิ่ม:", bonusScores)
     }
   ]
 };
-

@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>หน่วยที่ 5 — Array & Function</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&family=Prompt:wght@700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f1117;
+            --surface: #1a1d27;
+            --card: #21253a;
+            --border: #2e3350;
+            --accent1: #7c6aff;
+            /* purple */
+            --accent2: #3ddcb0;
+            /* teal */
+            --accent3: #ff6b6b;
+            /* red */
+            --accent4: #ffd166;
+            /* yellow */
+            --accent5: #74b9ff;
+            /* blue */
+            --text: #e8eaf6;
+            --muted: #8890b5;
+            --code-bg: #131625;
+            --tag-arr: #2d1f6e;
+            --tag-fn: #1a3a2e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Sarabun', sans-serif;
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            background: linear-gradient(135deg, #0f1117 0%, #1a1030 50%, #0f1117 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 64px 24px 56px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(124, 106, 255, .18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .unit-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--accent1), var(--accent2));
+            color: #fff;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 6px 18px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-family: 'Prompt', sans-serif;
+            font-size: clamp(2rem, 6vw, 3.6rem);
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 30%, var(--accent1));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.15;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 1.1rem;
+            max-width: 520px;
+            margin: 0 auto 32px;
+        }
+
+        .hero-tags {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hero-tag {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            color: var(--accent2);
+        }
+
+        /* ─── LAYOUT ─── */
+        .wrapper {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+
+        /* ─── TOC ─── */
+        .toc {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent1);
+            border-radius: 12px;
+            padding: 28px 32px;
+            margin: 40px 0 56px;
+        }
+
+        .toc-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent1);
+            margin-bottom: 16px;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 32px;
+        }
+
+        .toc a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+            transition: color .2s;
+        }
+
+        .toc a:hover {
+            color: var(--text);
+        }
+
+        .toc a .num {
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            color: var(--accent1);
+            opacity: .6;
+            min-width: 28px;
+        }
+
+        /* ─── SECTION ─── */
+        .section {
+            margin-bottom: 64px;
+        }
+
+        .section-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent2);
+            margin-bottom: 8px;
+        }
+
+        .section-label.fn-label {
+            color: var(--accent4);
+        }
+
+        .section h2 {
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section h2 .icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .icon-arr {
+            background: var(--tag-arr);
+        }
+
+        .icon-fn {
+            background: var(--tag-fn);
+        }
+
+        .section h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent5);
+            margin: 28px 0 10px;
+        }
+
+        .section p {
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .section p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ─── CARD ─── */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0;
+        }
+
+        .card.highlight {
+            border-color: var(--accent1);
+            background: rgba(124, 106, 255, .07);
+        }
+
+        .card.tip {
+            border-color: var(--accent2);
+            background: rgba(61, 220, 176, .06);
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .card.warning {
+            border-color: var(--accent4);
+            background: rgba(255, 209, 102, .06);
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .card.error {
+            border-color: var(--accent3);
+            background: rgba(255, 107, 107, .06);
+        }
+
+        .tip-icon {
+            font-size: 20px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .card strong {
+            color: var(--accent2);
+        }
+
+        .card.warning strong {
+            color: var(--accent4);
+        }
+
+        /* ─── CODE ─── */
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px 24px;
+            overflow-x: auto;
+            margin: 14px 0;
+            position: relative;
+        }
+
+        pre .file-tag {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            letter-spacing: 1px;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        p code,
+        li code {
+            background: rgba(124, 106, 255, .15);
+            color: var(--accent1);
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+
+        /* syntax */
+        .kw {
+            color: #c792ea;
+        }
+
+        /* keyword */
+        .ty {
+            color: #82aaff;
+        }
+
+        /* type */
+        .str {
+            color: #c3e88d;
+        }
+
+        /* string */
+        .num {
+            color: #f78c6c;
+        }
+
+        /* number */
+        .cmt {
+            color: #546e7a;
+            font-style: italic;
+        }
+
+        /* comment */
+        .fn {
+            color: #82aaff;
+        }
+
+        /* function name */
+        .arr {
+            color: var(--accent2);
+        }
+
+        /* array/teal */
+        .op {
+            color: var(--accent3);
+        }
+
+        /* operator */
+        .out {
+            color: var(--accent4);
+        }
+
+        /* output */
+
+        /* ─── COMPARISON TABLE ─── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 14px;
+        }
+
+        th {
+            background: var(--border);
+            color: var(--accent2);
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 10px 16px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, .02);
+        }
+
+        /* ─── METHOD BADGE ─── */
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .method-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+
+        .method-name {
+            font-family: 'Fira Code', monospace;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--accent2);
+            margin-bottom: 6px;
+        }
+
+        .method-desc {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        /* ─── STEP ─── */
+        .steps {
+            margin: 16px 0;
+        }
+
+        .step {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 18px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            background: linear-gradient(135deg, var(--accent1), var(--accent2));
+            color: #fff;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            min-width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .step-body strong {
+            color: var(--text);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .step-body p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* ─── OUTPUT BLOCK ─── */
+        .output {
+            background: #0a0c14;
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent4);
+            border-radius: 8px;
+            padding: 14px 20px;
+            margin: 10px 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            color: var(--accent4);
+        }
+
+        .output::before {
+            content: '▶ output';
+            display: block;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        /* ─── DIVIDER ─── */
+        .part-divider {
+            text-align: center;
+            margin: 64px 0 48px;
+            position: relative;
+        }
+
+        .part-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+        }
+
+        .part-divider span {
+            position: relative;
+            background: var(--bg);
+            padding: 0 24px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent4), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ─── SUMMARY BOX ─── */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .summary-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+
+        .summary-item .s-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            color: var(--accent1);
+            margin-bottom: 6px;
+        }
+
+        .summary-item .s-body {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        /* ─── REAL WORLD PROJECT ─── */
+        .project-banner {
+            background: linear-gradient(135deg, #1a1030, #0f1f1a);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px 28px 20px;
+            margin-bottom: 28px;
+        }
+
+        .project-banner .proj-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent4);
+            margin-bottom: 8px;
+        }
+
+        .project-banner h3 {
+            font-family: 'Prompt', sans-serif;
+            font-size: 1.3rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .project-banner p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        ul {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        ul li {
+            padding: 4px 0 4px 20px;
+            position: relative;
+            color: var(--text);
+            font-size: 15px;
+        }
+
+        ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent1);
+            font-size: 12px;
+            top: 7px;
+        }
+
+        @media (max-width: 600px) {
+            .toc-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .method-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="unit-badge">Unit 5</div>
+        <h1>Array &amp; Function</h1>
+        <p>เรียนรู้การเก็บข้อมูลหลายชิ้นใน Array และการสร้าง Function เพื่อนำโค้ดมาใช้ซ้ำ — สำหรับผู้ไม่มีพื้นฐานเลย</p>
+        <div class="hero-tags">
+            <span class="hero-tag">Array[]</span>
+            <span class="hero-tag">Tuple</span>
+            <span class="hero-tag">push / pop</span>
+            <span class="hero-tag">map / filter</span>
+            <span class="hero-tag">Function</span>
+            <span class="hero-tag">Arrow =&gt;</span>
+        </div>
+    </div>
+
+    <div class="wrapper">
+
+        <!-- TOC -->
+        <div class="toc">
+            <div class="toc-title">📋 สารบัญหน่วยที่ 5</div>
+            <div class="toc-grid">
+                <a href="#why-array"><span class="num">5.1</span>ทำไมต้องมี Array?</a>
+                <a href="#what-array"><span class="num">5.2</span>Array คืออะไร</a>
+                <a href="#declare"><span class="num">5.3</span>การประกาศ Array</a>
+                <a href="#access"><span class="num">5.4</span>การเข้าถึงสมาชิก</a>
+                <a href="#tuple"><span class="num">5.5</span>Tuple</a>
+                <a href="#push-pop"><span class="num">5.6</span>push() และ pop()</a>
+                <a href="#map"><span class="num">5.7</span>map()</a>
+                <a href="#filter"><span class="num">5.8</span>filter()</a>
+                <a href="#summary-array"><span class="num">5.9</span>สรุปการจัดการ Array</a>
+                <a href="#what-fn"><span class="num">5.10</span>Function คืออะไร</a>
+                <a href="#create-fn"><span class="num">5.11</span>การสร้าง Function</a>
+                <a href="#param"><span class="num">5.12</span>Parameter</a>
+                <a href="#return"><span class="num">5.13</span>Return Type</a>
+                <a href="#arrow"><span class="num">5.14</span>Arrow Function</a>
+                <a href="#short-fn"><span class="num">5.15</span>Function แบบย่อ</a>
+                <a href="#arr-fn"><span class="num">5.16</span>Array + Function</a>
+                <a href="#project1"><span class="num">5.17</span>ระบบรายชื่อนักเรียน</a>
+                <a href="#project2"><span class="num">5.18</span>ระบบร้านค้า</a>
+            </div>
+        </div>
+
+        <!-- ═══════════════ PART 1: ARRAY ═══════════════ -->
+
+        <!-- 5.1 WHY ARRAY -->
+        <div class="section" id="why-array">
+            <div class="section-label">5.1 — เหตุผล</div>
+            <h2><span class="icon icon-arr">📦</span>ทำไมต้องมี Array?</h2>
+            <p>ลองนึกภาพว่าเราต้องเก็บชื่อนักเรียน 5 คน ถ้าไม่มี Array เราต้องประกาศตัวแปรแยกกัน 5 ตัว:</p>
+            <pre><code><span class="kw">let</span> student1 <span class="op">=</span> <span class="str">"สมชาย"</span>
+<span class="kw">let</span> student2 <span class="op">=</span> <span class="str">"สมหญิง"</span>
+<span class="kw">let</span> student3 <span class="op">=</span> <span class="str">"สมศักดิ์"</span>
+<span class="kw">let</span> student4 <span class="op">=</span> <span class="str">"สมปอง"</span>
+<span class="kw">let</span> student5 <span class="op">=</span> <span class="str">"สมฤดี"</span>
+<span class="cmt">// 😱 แล้วถ้ามี 100 คน ต้องเขียน 100 บรรทัด!</span></code></pre>
+
+            <div class="card tip">
+                <div class="tip-icon">💡</div>
+                <div>
+                    <strong>Array แก้ปัญหานี้!</strong><br>
+                    เราสามารถเก็บนักเรียนทุกคนในตัวแปรเดียว แล้ววนซ้ำหาหรือจัดการข้อมูลได้ง่ายมาก
+                </div>
+            </div>
+
+            <pre><code><span class="kw">let</span> students<span class="op">:</span> <span class="ty">string</span>[] <span class="op">=</span> [<span class="str">"สมชาย"</span>, <span class="str">"สมหญิง"</span>, <span class="str">"สมศักดิ์"</span>, <span class="str">"สมปอง"</span>, <span class="str">"สมฤดี"</span>]
+<span class="cmt">// ✅ เก็บทั้งหมดในบรรทัดเดียว!</span></code></pre>
+        </div>
+
+        <!-- 5.2 WHAT IS ARRAY -->
+        <div class="section" id="what-array">
+            <div class="section-label">5.2 — ความหมาย</div>
+            <h2><span class="icon icon-arr">🗃️</span>Array คืออะไร</h2>
+            <p>Array คือ <strong style="color:var(--accent2)">ตู้ลิ้นชัก</strong> ที่มีหลายช่อง แต่ละช่องเก็บข้อมูล 1
+                ชิ้น โดยแต่ละช่องจะมี <strong style="color:var(--accent2)">หมายเลข (index)</strong> กำกับไว้ เริ่มนับจาก
+                <code>0</code></p>
+
+            <div class="card">
+                <table>
+                    <tr>
+                        <th>Index</th>
+                        <th>0</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                    </tr>
+                    <tr>
+                        <td style="color:var(--muted);font-size:13px">ค่า</td>
+                        <td>"สมชาย"</td>
+                        <td>"สมหญิง"</td>
+                        <td>"สมศักดิ์"</td>
+                        <td>"สมปอง"</td>
+                        <td>"สมฤดี"</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card tip">
+                <div class="tip-icon">🔑</div>
+                <div><strong>จำไว้!</strong> Index เริ่มต้นที่ <code>0</code> เสมอ ไม่ใช่ 1<br>
+                    ฉะนั้น สมาชิกคนแรกอยู่ที่ <code>index 0</code>, คนที่สองอยู่ที่ <code>index 1</code></div>
+            </div>
+        </div>
+
+        <!-- 5.3 DECLARE -->
+        <div class="section" id="declare">
+            <div class="section-label">5.3 — การประกาศ</div>
+            <h2><span class="icon icon-arr">✏️</span>การประกาศ Array</h2>
+
+            <h3>รูปแบบพื้นฐาน</h3>
+            <pre><code><span class="cmt">// รูปแบบ: let ชื่อตัวแปร: ชนิดข้อมูล[] = [...]</span>
+
+<span class="kw">let</span> fruits<span class="op">:</span> <span class="ty">string</span>[] <span class="op">=</span> [<span class="str">"แอปเปิ้ล"</span>, <span class="str">"กล้วย"</span>, <span class="str">"มะม่วง"</span>]
+<span class="kw">let</span> scores<span class="op">:</span> <span class="ty">number</span>[] <span class="op">=</span> [<span class="num">90</span>, <span class="num">85</span>, <span class="num">72</span>, <span class="num">95</span>]
+<span class="kw">let</span> flags<span class="op">:</span>  <span class="ty">boolean</span>[] <span class="op">=</span> [<span class="kw">true</span>, <span class="kw">false</span>, <span class="kw">true</span>]</code></pre>
+
+            <h3>Array ว่างเปล่า (เตรียมไว้ก่อน)</h3>
+            <pre><code><span class="kw">let</span> cart<span class="op">:</span> <span class="ty">string</span>[] <span class="op">=</span> []   <span class="cmt">// ตะกร้าสินค้าว่าง รอเพิ่มทีหลัง</span></code></pre>
+
+            <div class="card tip">
+                <div class="tip-icon">📝</div>
+                <div><strong>อ่านแบบง่าย:</strong> <code>string[]</code> คือ "Array ของ string" — วงเล็บก้ามปู
+                    <code>[]</code> บอกว่าเป็น Array</div>
+            </div>
+        </div>
+
+        <!-- 5.4 ACCESS -->
+        <div class="section" id="access">
+            <div class="section-label">5.4 — การเข้าถึง</div>
+            <h2><span class="icon icon-arr">🎯</span>การเข้าถึงสมาชิก</h2>
+
+            <p>ใช้เครื่องหมาย <code>[index]</code> เพื่อดึงค่าออกมา:</p>
+            <pre><code><span class="kw">let</span> colors<span class="op">:</span> <span class="ty">string</span>[] <span class="op">=</span> [<span class="str">"แดง"</span>, <span class="str">"เขียว"</span>, <span class="str">"น้ำเงิน"</span>]
+
+console.<span class="fn">log</span>(colors[<span class="num">0</span>])  <span class="cmt">// "แดง"   ← ตัวแรก</span>
+console.<span class="fn">log</span>(colors[<span class="num">1</span>])  <span class="cmt">// "เขียว" ← ตัวที่สอง</span>
+console.<span class="fn">log</span>(colors[<span class="num">2</span>])  <span class="cmt">// "น้ำเงิน" ← ตัวที่สาม</span>
+
+<span class="cmt">// อยากรู้ว่ามีสมาชิกกี่ตัว?</span>
+console.<span class="fn">log</span>(colors.<span class="arr">length</span>)  <span class="cmt">// 3</span></code></pre>
+
+            <div class="output">"แดง"<br>"เขียว"<br>"น้ำเงิน"<br>3</div>
+
+            <h3>แก้ไขค่าใน Array</h3>
+            <pre><code>colors[<span class="num">1</span>] <span class="op">=</span> <span class="str">"เหลือง"</span>   <span class="cmt">// เปลี่ยน "เขียว" เป็น "เหลือง"</span>
+console.<span class="fn">log</span>(colors)    <span class="cmt">// ["แดง", "เหลือง", "น้ำเงิน"]</span></code></pre>
+
+            <div class="card warning">
+                <div class="tip-icon">⚠️</div>
+                <div><strong>ระวัง Index เกิน!</strong><br>
+                    ถ้าเรียก <code>colors[5]</code> ในขณะที่มีแค่ 3 สมาชิก จะได้ <code>undefined</code> — ไม่มี error
+                    แต่ค่าจะว่าง</div>
+            </div>
+        </div>
+
+        <!-- 5.5 TUPLE -->
+        <div class="section" id="tuple">
+            <div class="section-label">5.5 — ชนิดพิเศษ</div>
+            <h2><span class="icon icon-arr">🎭</span>Tuple</h2>
+
+            <p>Tuple คือ Array พิเศษที่ <strong style="color:var(--accent2)">กำหนดชนิดข้อมูลแต่ละช่องได้แน่นอน</strong>
+                เหมาะสำหรับข้อมูลที่มีรูปแบบชัดเจน เช่น (ชื่อ, อายุ) หรือ (x, y)</p>
+
+            <pre><code><span class="cmt">// Array ธรรมดา — ทุกช่องต้องเป็น string</span>
+<span class="kw">let</span> arr<span class="op">:</span> <span class="ty">string</span>[] <span class="op">=</span> [<span class="str">"สมชาย"</span>, <span class="str">"20"</span>]
+
+<span class="cmt">// Tuple — ช่องที่ 1 เป็น string, ช่องที่ 2 เป็น number</span>
+<span class="kw">let</span> person<span class="op">:</span> [<span class="ty">string</span>, <span class="ty">number</span>] <span class="op">=</span> [<span class="str">"สมชาย"</span>, <span class="num">20</span>]
+
+console.<span class="fn">log</span>(person[<span class="num">0</span>])  <span class="cmt">// "สมชาย"</span>
+console.<span class="fn">log</span>(person[<span class="num">1</span>])  <span class="cmt">// 20</span></code></pre>
+
+            <div class="output">"สมชาย"<br>20</div>
+
+            <h3>ตัวอย่างการใช้งาน Tuple</h3>
+            <pre><code><span class="kw">let</span> coordinate<span class="op">:</span> [<span class="ty">number</span>, <span class="ty">number</span>] <span class="op">=</span> [<span class="num">13.7563</span>, <span class="num">100.5018</span>]  <span class="cmt">// lat, lng ของกรุงเทพ</span>
+<span class="kw">let</span> product<span class="op">:</span>    [<span class="ty">string</span>, <span class="ty">number</span>, <span class="ty">boolean</span>] <span class="op">=</span> [<span class="str">"กาแฟ"</span>, <span class="num">65</span>, <span class="kw">true</span>]  <span class="cmt">// ชื่อ, ราคา, มีสินค้า</span></code></pre>
+
+            <div class="card tip">
+                <div class="tip-icon">💡</div>
+                <div><strong>Array vs Tuple:</strong><br>
+                    Array ทุกช่องเป็นชนิดเดียวกัน เช่น <code>number[]</code><br>
+                    Tuple แต่ละช่องเป็นคนละชนิดได้ เช่น <code>[string, number, boolean]</code></div>
+            </div>
+        </div>
+
+        <!-- 5.6 PUSH POP -->
+        <div class="section" id="push-pop">
+            <div class="section-label">5.6 — เพิ่ม / ลบ</div>
+            <h2><span class="icon icon-arr">🔧</span>push() และ pop()</h2>
+
+            <h3>push() — เพิ่มสมาชิกท้าย Array</h3>
+            <pre><code><span class="kw">let</span> cart<span class="op">:</span> <span class="ty">string</span>[] <span class="op">=</span> [<span class="str">"ขนมปัง"</span>, <span class="str">"นม"</span>]
+
+cart.<span class="fn">push</span>(<span class="str">"ไข่"</span>)
+console.<span class="fn">log</span>(cart)   <span class="cmt">// ["ขนมปัง", "นม", "ไข่"]</span>
+
+cart.<span class="fn">push</span>(<span class="str">"กาแฟ"</span>)
+console.<span class="fn">log</span>(cart)   <span class="cmt">// ["ขนมปัง", "นม", "ไข่", "กาแฟ"]</span></code></pre>
+            <div class="output">["ขนมปัง", "นม", "ไข่"]<br>["ขนมปัง", "นม", "ไข่", "กาแฟ"]</div>
+
+            <h3>pop() — ลบสมาชิกตัวสุดท้ายออก</h3>
+            <pre><code><span class="kw">let</span> stack<span class="op">:</span> <span class="ty">string</span>[] <span class="op">=</span> [<span class="str">"A"</span>, <span class="str">"B"</span>, <span class="str">"C"</span>]
+
+<span class="kw">let</span> removed <span class="op">=</span> stack.<span class="fn">pop</span>()
+console.<span class="fn">log</span>(removed)  <span class="cmt">// "C"  ← ค่าที่ถูกเอาออก</span>
+console.<span class="fn">log</span>(stack)    <span class="cmt">// ["A", "B"]</span></code></pre>
+            <div class="output">"C"<br>["A", "B"]</div>
+
+            <div class="card tip">
+                <div class="tip-icon">🎒</div>
+                <div><strong>เปรียบกับกระเป๋า:</strong><br>
+                    <code>push()</code> = ยัดของเข้ากระเป๋า<br>
+                    <code>pop()</code> = หยิบของออกจากกระเป๋า (หยิบชิ้นสุดท้ายออกมาเสมอ)
+                </div>
+            </div>
+        </div>
+
+        <!-- 5.7 MAP -->
+        <div class="section" id="map">
+            <div class="section-label">5.7 — แปลงข้อมูล</div>
+            <h2><span class="icon icon-arr">🗺️</span>map()</h2>
+
+            <p><code>map()</code> คือการ <strong style="color:var(--accent2)">แปลงทุกสมาชิกใน Array</strong> แล้วได้
+                Array ใหม่ที่มีจำนวนสมาชิกเท่าเดิม</p>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        <strong>วนผ่านทุกสมาชิก</strong>
+                        <p>map() จะหยิบแต่ละตัวขึ้นมาทีละอัน</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        <strong>แปลงค่าตามที่บอก</strong>
+                        <p>เราบอกว่าจะเปลี่ยนยังไง เช่น คูณ 2, เพิ่ม text</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <strong>ได้ Array ใหม่</strong>
+                        <p>Array เดิมไม่เปลี่ยน แต่ได้ Array ใหม่ที่แปลงแล้ว</p>
+                    </div>
+                </div>
+            </div>
+
+            <pre><code><span class="kw">let</span> prices<span class="op">:</span> <span class="ty">number</span>[] <span class="op">=</span> [<span class="num">100</span>, <span class="num">200</span>, <span class="num">300</span>]
+
+<span class="cmt">// บวก VAT 7% ทุกราคา</span>
+<span class="kw">let</span> withVat <span class="op">=</span> prices.<span class="fn">map</span>(price <span class="op">=></span> price <span class="op">*</span> <span class="num">1.07</span>)
+
+console.<span class="fn">log</span>(withVat)   <span class="cmt">// [107, 214, 321]</span>
+console.<span class="fn">log</span>(prices)    <span class="cmt">// [100, 200, 300]  ← ของเดิมยังอยู่!</span></code></pre>
+            <div class="output">[107, 214, 321]<br>[100, 200, 300]</div>
+
+            <h3>ตัวอย่างเพิ่มเติม</h3>
+            <pre><code><span class="kw">let</span> names<span class="op">:</span> <span class="ty">string</span>[] <span class="op">=</span> [<span class="str">"สมชาย"</span>, <span class="str">"สมหญิง"</span>, <span class="str">"สมศักดิ์"</span>]
+
+<span class="cmt">// เพิ่มคำทักทายหน้าชื่อทุกคน</span>
+<span class="kw">let</span> greetings <span class="op">=</span> names.<span class="fn">map</span>(name <span class="op">=></span> <span class="str">`สวัสดี, ${name}!`</span>)
+
+console.<span class="fn">log</span>(greetings)</code></pre>
+            <div class="output">["สวัสดี, สมชาย!", "สวัสดี, สมหญิง!", "สวัสดี, สมศักดิ์!"]</div>
+        </div>
+
+        <!-- 5.8 FILTER -->
+        <div class="section" id="filter">
+            <div class="section-label">5.8 — กรองข้อมูล</div>
+            <h2><span class="icon icon-arr">🔍</span>filter()</h2>
+
+            <p><code>filter()</code> คือการ <strong style="color:var(--accent2)">กรองสมาชิกที่ผ่านเงื่อนไข</strong>
+                ออกมาเป็น Array ใหม่ (อาจมีจำนวนน้อยลง)</p>
+
+            <pre><code><span class="kw">let</span> scores<span class="op">:</span> <span class="ty">number</span>[] <span class="op">=</span> [<span class="num">45</span>, <span class="num">78</span>, <span class="num">92</span>, <span class="num">55</span>, <span class="num">88</span>, <span class="num">30</span>]
+
+<span class="cmt">// กรองเฉพาะคนที่ผ่าน (>= 60)</span>
+<span class="kw">let</span> passed <span class="op">=</span> scores.<span class="fn">filter</span>(score <span class="op">=></span> score <span class="op">>=</span> <span class="num">60</span>)
+
+console.<span class="fn">log</span>(passed)    <span class="cmt">// [78, 92, 88]</span>
+console.<span class="fn">log</span>(scores)    <span class="cmt">// [45, 78, 92, 55, 88, 30]  ← ของเดิมไม่เปลี่ยน</span></code></pre>
+            <div class="output">[78, 92, 88]<br>[45, 78, 92, 55, 88, 30]</div>
+
+            <h3>filter กับ string</h3>
+            <pre><code><span class="kw">let</span> fruits<span class="op">:</span> <span class="ty">string</span>[] <span class="op">=</span> [<span class="str">"แอปเปิ้ล"</span>, <span class="str">"กล้วย"</span>, <span class="str">"กีวี"</span>, <span class="str">"แคนตาลูป"</span>]
+
+<span class="cmt">// กรองเฉพาะที่ขึ้นต้นด้วย "ก"</span>
+<span class="kw">let</span> gFruits <span class="op">=</span> fruits.<span class="fn">filter</span>(f <span class="op">=></span> f.<span class="fn">startsWith</span>(<span class="str">"ก"</span>))
+
+console.<span class="fn">log</span>(gFruits)   <span class="cmt">// ["กล้วย", "กีวี", "แคนตาลูป"]</span></code></pre>
+
+            <div class="card highlight">
+                <strong style="color:var(--accent1)">map vs filter เปรียบง่ายๆ</strong><br><br>
+                <table>
+                    <tr>
+                        <th>เครื่องมือ</th>
+                        <th>ทำอะไร</th>
+                        <th>ผลลัพธ์</th>
+                    </tr>
+                    <tr>
+                        <td><code>map()</code></td>
+                        <td>แปลงทุกตัว</td>
+                        <td>จำนวนเท่าเดิม</td>
+                    </tr>
+                    <tr>
+                        <td><code>filter()</code></td>
+                        <td>กรองบางตัว</td>
+                        <td>อาจน้อยลง</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 5.9 SUMMARY ARRAY -->
+        <div class="section" id="summary-array">
+            <div class="section-label">5.9 — สรุป</div>
+            <h2><span class="icon icon-arr">📊</span>สรุปการจัดการ Array</h2>
+
+            <div class="method-grid">
+                <div class="method-card">
+                    <div class="method-name">.push()</div>
+                    <div class="method-desc">เพิ่มสมาชิกท้าย Array</div>
+                </div>
+                <div class="method-card">
+                    <div class="method-name">.pop()</div>
+                    <div class="method-desc">ลบสมาชิกตัวสุดท้าย</div>
+                </div>
+                <div class="method-card">
+                    <div class="method-name">.map()</div>
+                    <div class="method-desc">แปลงทุกสมาชิก → Array ใหม่</div>
+                </div>
+                <div class="method-card">
+                    <div class="method-name">.filter()</div>
+                    <div class="method-desc">กรองสมาชิกตามเงื่อนไข</div>
+                </div>
+                <div class="method-card">
+                    <div class="method-name">.length</div>
+                    <div class="method-desc">ดูจำนวนสมาชิก</div>
+                </div>
+                <div class="method-card">
+                    <div class="method-name">[index]</div>
+                    <div class="method-desc">ดึงค่าตาม index</div>
+                </div>
+            </div>
+
+            <pre><code><span class="kw">let</span> nums<span class="op">:</span> <span class="ty">number</span>[] <span class="op">=</span> [<span class="num">3</span>, <span class="num">1</span>, <span class="num">4</span>, <span class="num">1</span>, <span class="num">5</span>]
+
+nums.<span class="fn">push</span>(<span class="num">9</span>)                              <span class="cmt">// [3, 1, 4, 1, 5, 9]</span>
+nums.<span class="fn">pop</span>()                               <span class="cmt">// [3, 1, 4, 1, 5]</span>
+<span class="kw">let</span> doubled <span class="op">=</span> nums.<span class="fn">map</span>(n <span class="op">=></span> n <span class="op">*</span> <span class="num">2</span>)       <span class="cmt">// [6, 2, 8, 2, 10]</span>
+<span class="kw">let</span> big     <span class="op">=</span> nums.<span class="fn">filter</span>(n <span class="op">=></span> n <span class="op">></span> <span class="num">3</span>)   <span class="cmt">// [4, 5]</span></code></pre>
+        </div>
+
+        <!-- DIVIDER -->
+        <div class="part-divider"><span>ส่วนที่ 2: Function</span></div>
+
+        <!-- 5.10 WHAT IS FUNCTION -->
+        <div class="section" id="what-fn">
+            <div class="section-label fn-label">5.10 — ความหมาย</div>
+            <h2><span class="icon icon-fn">⚙️</span>Function คืออะไร</h2>
+
+            <p>Function คือ <strong style="color:var(--accent4)">สูตรที่เก็บไว้</strong> — เขียนครั้งเดียว
+                เรียกใช้ได้กี่ครั้งก็ได้</p>
+
+            <p>ลองนึกภาพ <strong style="color:var(--accent4)">เครื่องชงกาแฟ</strong>: เราตั้งโปรแกรมไว้ แล้วแค่กดปุ่ม —
+                เครื่องจะทำทุกขั้นตอนให้เอง</p>
+
+            <div class="card">
+                <strong style="color:var(--accent4)">ทำไมต้องใช้ Function?</strong>
+                <ul style="margin-top: 12px;">
+                    <li>ไม่ต้องเขียนโค้ดซ้ำหลายครั้ง</li>
+                    <li>แก้ไขที่เดียว ใช้งานได้ทุกที่</li>
+                    <li>โค้ดอ่านง่าย เข้าใจได้ทันที</li>
+                    <li>แบ่งงานเป็นชิ้นเล็กๆ จัดการง่าย</li>
+                </ul>
+            </div>
+
+            <pre><code><span class="cmt">// ❌ ไม่มี Function — เขียนซ้ำ</span>
+console.<span class="fn">log</span>(<span class="str">"สวัสดี, สมชาย!"</span>)
+console.<span class="fn">log</span>(<span class="str">"สวัสดี, สมหญิง!"</span>)
+console.<span class="fn">log</span>(<span class="str">"สวัสดี, สมศักดิ์!"</span>)
+
+<span class="cmt">// ✅ มี Function — เขียนครั้งเดียว เรียกได้เลย</span>
+<span class="kw">function</span> <span class="fn">greet</span>(name<span class="op">:</span> <span class="ty">string</span>) {
+  console.<span class="fn">log</span>(<span class="str">`สวัสดี, ${name}!`</span>)
+}
+
+<span class="fn">greet</span>(<span class="str">"สมชาย"</span>)
+<span class="fn">greet</span>(<span class="str">"สมหญิง"</span>)
+<span class="fn">greet</span>(<span class="str">"สมศักดิ์"</span>)</code></pre>
+        </div>
+
+        <!-- 5.11 CREATE FUNCTION -->
+        <div class="section" id="create-fn">
+            <div class="section-label fn-label">5.11 — การสร้าง</div>
+            <h2><span class="icon icon-fn">🏗️</span>การสร้าง Function</h2>
+
+            <div class="card">
+                <code
+                    style="color:var(--text)"><span class="kw">function</span> <span class="fn">ชื่อFunction</span>(<span class="ty">parameter</span>) { <br>&nbsp;&nbsp;<span class="cmt">// โค้ดที่ต้องการรัน</span><br>}</code>
+            </div>
+
+            <pre><code><span class="cmt">// Function ง่ายที่สุด — ไม่มี parameter, ไม่ return</span>
+<span class="kw">function</span> <span class="fn">sayHello</span>() {
+  console.<span class="fn">log</span>(<span class="str">"สวัสดีครับ!"</span>)
+}
+
+<span class="fn">sayHello</span>()   <span class="cmt">// เรียกใช้</span>
+<span class="fn">sayHello</span>()   <span class="cmt">// เรียกซ้ำได้</span></code></pre>
+            <div class="output">สวัสดีครับ!<br>สวัสดีครับ!</div>
+        </div>
+
+        <!-- 5.12 PARAMETER -->
+        <div class="section" id="param">
+            <div class="section-label fn-label">5.12 — Parameter</div>
+            <h2><span class="icon icon-fn">📥</span>Parameter</h2>
+
+            <p>Parameter คือ <strong style="color:var(--accent4)">ช่องรับข้อมูล</strong> ที่เราส่งเข้าไปใน Function —
+                เหมือนช่องใส่วัตถุดิบในเครื่องทำอาหาร</p>
+
+            <pre><code><span class="cmt">// มี 1 parameter</span>
+<span class="kw">function</span> <span class="fn">greet</span>(name<span class="op">:</span> <span class="ty">string</span>) {
+  console.<span class="fn">log</span>(<span class="str">`สวัสดี, ${name}!`</span>)
+}
+<span class="fn">greet</span>(<span class="str">"มานะ"</span>)    <span class="cmt">// "สวัสดี, มานะ!"</span>
+
+<span class="cmt">// มี 2 parameters</span>
+<span class="kw">function</span> <span class="fn">add</span>(a<span class="op">:</span> <span class="ty">number</span>, b<span class="op">:</span> <span class="ty">number</span>) {
+  console.<span class="fn">log</span>(a <span class="op">+</span> b)
+}
+<span class="fn">add</span>(<span class="num">10</span>, <span class="num">5</span>)      <span class="cmt">// 15</span>
+<span class="fn">add</span>(<span class="num">100</span>, <span class="num">200</span>)   <span class="cmt">// 300</span></code></pre>
+
+            <h3>Parameter ค่าเริ่มต้น (Default Parameter)</h3>
+            <pre><code><span class="kw">function</span> <span class="fn">greet</span>(name<span class="op">:</span> <span class="ty">string</span> <span class="op">=</span> <span class="str">"แขกผู้มาเยือน"</span>) {
+  console.<span class="fn">log</span>(<span class="str">`สวัสดี, ${name}!`</span>)
+}
+
+<span class="fn">greet</span>(<span class="str">"สมชาย"</span>)  <span class="cmt">// "สวัสดี, สมชาย!"</span>
+<span class="fn">greet</span>()          <span class="cmt">// "สวัสดี, แขกผู้มาเยือน!"  ← ใช้ค่า default</span></code></pre>
+            <div class="output">สวัสดี, สมชาย!<br>สวัสดี, แขกผู้มาเยือน!</div>
+        </div>
+
+        <!-- 5.13 RETURN TYPE -->
+        <div class="section" id="return">
+            <div class="section-label fn-label">5.13 — Return Type</div>
+            <h2><span class="icon icon-fn">📤</span>Return Type</h2>
+
+            <p><code>return</code> คือการ <strong style="color:var(--accent4)">ส่งค่าคืน</strong> กลับออกมาจาก Function
+                — เหมือนเครื่องคิดเลขที่แสดงผลลัพธ์</p>
+
+            <pre><code><span class="cmt">// รูปแบบ: function ชื่อ(param): ชนิดที่return { return ค่า }</span>
+
+<span class="kw">function</span> <span class="fn">add</span>(a<span class="op">:</span> <span class="ty">number</span>, b<span class="op">:</span> <span class="ty">number</span>)<span class="op">:</span> <span class="ty">number</span> {
+  <span class="kw">return</span> a <span class="op">+</span> b
+}
+
+<span class="kw">let</span> result <span class="op">=</span> <span class="fn">add</span>(<span class="num">10</span>, <span class="num">20</span>)
+console.<span class="fn">log</span>(result)   <span class="cmt">// 30</span>
+console.<span class="fn">log</span>(<span class="fn">add</span>(<span class="num">5</span>, <span class="num">3</span>) <span class="op">*</span> <span class="num">2</span>)  <span class="cmt">// 16  ← นำผลลัพธ์ไปใช้ต่อได้</span></code></pre>
+            <div class="output">30<br>16</div>
+
+            <h3>ตัวอย่างหลายรูปแบบ</h3>
+            <pre><code><span class="kw">function</span> <span class="fn">isAdult</span>(age<span class="op">:</span> <span class="ty">number</span>)<span class="op">:</span> <span class="ty">boolean</span> {
+  <span class="kw">return</span> age <span class="op">>=</span> <span class="num">18</span>
+}
+
+<span class="kw">function</span> <span class="fn">fullName</span>(first<span class="op">:</span> <span class="ty">string</span>, last<span class="op">:</span> <span class="ty">string</span>)<span class="op">:</span> <span class="ty">string</span> {
+  <span class="kw">return</span> <span class="str">`${first} ${last}`</span>
+}
+
+console.<span class="fn">log</span>(<span class="fn">isAdult</span>(<span class="num">20</span>))             <span class="cmt">// true</span>
+console.<span class="fn">log</span>(<span class="fn">isAdult</span>(<span class="num">15</span>))             <span class="cmt">// false</span>
+console.<span class="fn">log</span>(<span class="fn">fullName</span>(<span class="str">"สมชาย"</span>, <span class="str">"ใจดี"</span>)) <span class="cmt">// "สมชาย ใจดี"</span></code></pre>
+
+            <div class="card tip">
+                <div class="tip-icon">💡</div>
+                <div><strong>Function ไม่ return → ใช้ <code>void</code></strong><br>
+                    ถ้า Function แค่ทำงาน ไม่ส่งค่ากลับ เช่น <code>console.log</code> เพียงอย่างเดียว ใส่
+                    <code>: void</code> หรือไม่ใส่ก็ได้</div>
+            </div>
+        </div>
+
+        <!-- 5.14 ARROW FUNCTION -->
+        <div class="section" id="arrow">
+            <div class="section-label fn-label">5.14 — Arrow Function</div>
+            <h2><span class="icon icon-fn">➡️</span>Arrow Function</h2>
+
+            <p>Arrow Function คือการเขียน Function แบบ <strong style="color:var(--accent4)">สั้นลง</strong> ใช้สัญลักษณ์
+                <code>=&gt;</code> (ลูกศร)</p>
+
+            <table>
+                <tr>
+                    <th>แบบ</th>
+                    <th>โค้ด</th>
+                </tr>
+                <tr>
+                    <td>Function ธรรมดา</td>
+                    <td><code><span class="kw">function</span> <span class="fn">add</span>(a, b) { <span class="kw">return</span> a + b }</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Arrow Function</td>
+                    <td><code><span class="kw">const</span> add <span class="op">=</span> (a, b) <span class="op">=></span> { <span class="kw">return</span> a + b }</code>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Arrow สั้นที่สุด</td>
+                    <td><code><span class="kw">const</span> add <span class="op">=</span> (a, b) <span class="op">=></span> a + b</code>
+                    </td>
+                </tr>
+            </table>
+
+            <pre><code><span class="cmt">// สามแบบทำงานเหมือนกันทุกประการ</span>
+
+<span class="kw">function</span> <span class="fn">square1</span>(n<span class="op">:</span> <span class="ty">number</span>)<span class="op">:</span> <span class="ty">number</span> {
+  <span class="kw">return</span> n <span class="op">*</span> n
+}
+
+<span class="kw">const</span> square2 <span class="op">=</span> (n<span class="op">:</span> <span class="ty">number</span>)<span class="op">:</span> <span class="ty">number</span> <span class="op">=></span> {
+  <span class="kw">return</span> n <span class="op">*</span> n
+}
+
+<span class="kw">const</span> square3 <span class="op">=</span> (n<span class="op">:</span> <span class="ty">number</span>)<span class="op">:</span> <span class="ty">number</span> <span class="op">=></span> n <span class="op">*</span> n  <span class="cmt">// สั้นที่สุด!</span>
+
+console.<span class="fn">log</span>(<span class="fn">square3</span>(<span class="num">5</span>))   <span class="cmt">// 25</span></code></pre>
+
+            <div class="card tip">
+                <div class="tip-icon">⚡</div>
+                <div><strong>Arrow Function สั้นพิเศษ:</strong><br>
+                    ถ้ามีแค่ 1 บรรทัดที่ return — ตัด <code>{ return }</code> ออกได้เลย!<br>
+                    <code>n =&gt; n * n</code> ก็คือ <code>{ return n * n }</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5.15 SHORT FUNCTION -->
+        <div class="section" id="short-fn">
+            <div class="section-label fn-label">5.15 — ย่อให้สุด</div>
+            <h2><span class="icon icon-fn">✂️</span>Function แบบย่อ</h2>
+
+            <pre><code><span class="cmt">// 1 parameter ไม่ต้องใส่วงเล็บ</span>
+<span class="kw">const</span> double <span class="op">=</span> (n<span class="op">:</span> <span class="ty">number</span>) <span class="op">=></span> n <span class="op">*</span> <span class="num">2</span>
+
+<span class="cmt">// ไม่มี parameter — ใส่วงเล็บว่าง</span>
+<span class="kw">const</span> hi <span class="op">=</span> () <span class="op">=></span> console.<span class="fn">log</span>(<span class="str">"สวัสดี"</span>)
+
+<span class="cmt">// หลาย parameters — ต้องมีวงเล็บ</span>
+<span class="kw">const</span> multiply <span class="op">=</span> (a<span class="op">:</span> <span class="ty">number</span>, b<span class="op">:</span> <span class="ty">number</span>) <span class="op">=></span> a <span class="op">*</span> b
+
+<span class="cmt">// return หลายบรรทัด — ต้องมีปีกกา</span>
+<span class="kw">const</span> gradeMsg <span class="op">=</span> (score<span class="op">:</span> <span class="ty">number</span>) <span class="op">=></span> {
+  <span class="kw">if</span> (score <span class="op">>=</span> <span class="num">80</span>) <span class="kw">return</span> <span class="str">"ดีมาก"</span>
+  <span class="kw">if</span> (score <span class="op">>=</span> <span class="num">60</span>) <span class="kw">return</span> <span class="str">"ผ่าน"</span>
+  <span class="kw">return</span> <span class="str">"ไม่ผ่าน"</span>
+}</code></pre>
+        </div>
+
+        <!-- 5.16 ARRAY + FUNCTION -->
+        <div class="section" id="arr-fn">
+            <div class="section-label fn-label">5.16 — ผสมกัน</div>
+            <h2><span class="icon icon-fn">🔗</span>Array + Function</h2>
+
+            <p>พลังที่แท้จริงมาเมื่อนำ Array และ Function มาใช้ด้วยกัน!</p>
+
+            <pre><code><span class="kw">let</span> scores<span class="op">:</span> <span class="ty">number</span>[] <span class="op">=</span> [<span class="num">45</span>, <span class="num">78</span>, <span class="num">92</span>, <span class="num">55</span>, <span class="num">88</span>]
+
+<span class="cmt">// Function ตรวจว่าผ่านหรือไม่</span>
+<span class="kw">const</span> isPassed <span class="op">=</span> (score<span class="op">:</span> <span class="ty">number</span>) <span class="op">=></span> score <span class="op">>=</span> <span class="num">60</span>
+
+<span class="cmt">// Function แปลงคะแนนเป็นเกรด</span>
+<span class="kw">const</span> toGrade <span class="op">=</span> (score<span class="op">:</span> <span class="ty">number</span>)<span class="op">:</span> <span class="ty">string</span> <span class="op">=></span> {
+  <span class="kw">if</span> (score <span class="op">>=</span> <span class="num">80</span>) <span class="kw">return</span> <span class="str">"A"</span>
+  <span class="kw">if</span> (score <span class="op">>=</span> <span class="num">70</span>) <span class="kw">return</span> <span class="str">"B"</span>
+  <span class="kw">if</span> (score <span class="op">>=</span> <span class="num">60</span>) <span class="kw">return</span> <span class="str">"C"</span>
+  <span class="kw">return</span> <span class="str">"F"</span>
+}
+
+<span class="cmt">// ใช้ร่วมกัน</span>
+<span class="kw">let</span> passed <span class="op">=</span> scores.<span class="fn">filter</span>(isPassed)         <span class="cmt">// [78, 92, 88]</span>
+<span class="kw">let</span> grades <span class="op">=</span> scores.<span class="fn">map</span>(toGrade)             <span class="cmt">// ["F","B","A","F","A"]</span>
+
+console.<span class="fn">log</span>(<span class="str">"ผ่าน:"</span>, passed)
+console.<span class="fn">log</span>(<span class="str">"เกรด:"</span>, grades)</code></pre>
+            <div class="output">ผ่าน: [78, 92, 88]<br>เกรด: ["F", "B", "A", "F", "A"]</div>
+        </div>
+
+        <!-- ═══ PROJECTS ═══ -->
+
+        <div class="part-divider"><span>🚀 โปรเจกต์จริง</span></div>
+
+        <!-- 5.17 PROJECT 1 -->
+        <div class="section" id="project1">
+            <div class="project-banner">
+                <div class="proj-label">🎓 โปรเจกต์จริง #1</div>
+                <h3>ระบบรายชื่อนักเรียน</h3>
+                <p>สร้างระบบจัดการนักเรียนที่สามารถเพิ่ม ค้นหา และคำนวณเกรดได้</p>
+            </div>
+
+            <pre><code><span class="file-tag">student-system.ts</span><span class="cmt">// ─── กำหนดโครงสร้างข้อมูลนักเรียน ───</span>
+<span class="kw">type</span> <span class="ty">Student</span> <span class="op">=</span> {
+  id<span class="op">:</span>    <span class="ty">number</span>
+  name<span class="op">:</span>  <span class="ty">string</span>
+  score<span class="op">:</span> <span class="ty">number</span>
+}
+
+<span class="cmt">// ─── ข้อมูลนักเรียน ───</span>
+<span class="kw">let</span> students<span class="op">:</span> <span class="ty">Student</span>[] <span class="op">=</span> [
+  { id: <span class="num">1</span>, name: <span class="str">"สมชาย"</span>,  score: <span class="num">85</span> },
+  { id: <span class="num">2</span>, name: <span class="str">"สมหญิง"</span>, score: <span class="num">72</span> },
+  { id: <span class="num">3</span>, name: <span class="str">"สมศักดิ์"</span>,score: <span class="num">58</span> },
+  { id: <span class="num">4</span>, name: <span class="str">"สมปอง"</span>,  score: <span class="num">91</span> },
+]
+
+<span class="cmt">// ─── Functions ───</span>
+
+<span class="cmt">// เพิ่มนักเรียนใหม่</span>
+<span class="kw">function</span> <span class="fn">addStudent</span>(name<span class="op">:</span> <span class="ty">string</span>, score<span class="op">:</span> <span class="ty">number</span>)<span class="op">:</span> <span class="ty">void</span> {
+  <span class="kw">const</span> newStudent<span class="op">:</span> <span class="ty">Student</span> <span class="op">=</span> {
+    id: students.<span class="arr">length</span> <span class="op">+</span> <span class="num">1</span>,
+    name,
+    score
+  }
+  students.<span class="fn">push</span>(newStudent)
+  console.<span class="fn">log</span>(<span class="str">`เพิ่ม ${name} สำเร็จ!`</span>)
+}
+
+<span class="cmt">// แปลงคะแนนเป็นเกรด</span>
+<span class="kw">const</span> getGrade <span class="op">=</span> (score<span class="op">:</span> <span class="ty">number</span>)<span class="op">:</span> <span class="ty">string</span> <span class="op">=></span> {
+  <span class="kw">if</span> (score <span class="op">>=</span> <span class="num">80</span>) <span class="kw">return</span> <span class="str">"A"</span>
+  <span class="kw">if</span> (score <span class="op">>=</span> <span class="num">70</span>) <span class="kw">return</span> <span class="str">"B"</span>
+  <span class="kw">if</span> (score <span class="op">>=</span> <span class="num">60</span>) <span class="kw">return</span> <span class="str">"C"</span>
+  <span class="kw">return</span> <span class="str">"F"</span>
+}
+
+<span class="cmt">// ดูรายชื่อนักเรียนทั้งหมดพร้อมเกรด</span>
+<span class="kw">function</span> <span class="fn">showAll</span>()<span class="op">:</span> <span class="ty">void</span> {
+  students.<span class="fn">map</span>(s <span class="op">=></span> {
+    console.<span class="fn">log</span>(<span class="str">`${s.id}. ${s.name} — คะแนน: ${s.score} เกรด: ${<span class="fn">getGrade</span>(s.score)}`</span>)
+  })
+}
+
+<span class="cmt">// กรองเฉพาะที่ผ่าน</span>
+<span class="kw">function</span> <span class="fn">getPassedStudents</span>()<span class="op">:</span> <span class="ty">Student</span>[] {
+  <span class="kw">return</span> students.<span class="fn">filter</span>(s <span class="op">=></span> s.score <span class="op">>=</span> <span class="num">60</span>)
+}
+
+<span class="cmt">// คำนวณคะแนนเฉลี่ย</span>
+<span class="kw">function</span> <span class="fn">getAverage</span>()<span class="op">:</span> <span class="ty">number</span> {
+  <span class="kw">const</span> total <span class="op">=</span> students.<span class="fn">map</span>(s <span class="op">=></span> s.score).<span class="fn">reduce</span>((a, b) <span class="op">=></span> a <span class="op">+</span> b, <span class="num">0</span>)
+  <span class="kw">return</span> total <span class="op">/</span> students.<span class="arr">length</span>
+}
+
+<span class="cmt">// ─── ทดสอบ ───</span>
+<span class="fn">addStudent</span>(<span class="str">"สมฤดี"</span>, <span class="num">76</span>)
+
+<span class="fn">showAll</span>()
+
+<span class="kw">const</span> passed <span class="op">=</span> <span class="fn">getPassedStudents</span>()
+console.<span class="fn">log</span>(<span class="str">`ผ่าน ${passed.<span class="arr">length</span>}/${students.<span class="arr">length</span>} คน`</span>)
+console.<span class="fn">log</span>(<span class="str">`คะแนนเฉลี่ย: ${<span class="fn">getAverage</span>()}`</span>)</code></pre>
+
+            <div class="output">
+                เพิ่ม สมฤดี สำเร็จ!<br>
+                1. สมชาย — คะแนน: 85 เกรด: A<br>
+                2. สมหญิง — คะแนน: 72 เกรด: B<br>
+                3. สมศักดิ์ — คะแนน: 58 เกรด: F<br>
+                4. สมปอง — คะแนน: 91 เกรด: A<br>
+                5. สมฤดี — คะแนน: 76 เกรด: B<br>
+                ผ่าน 4/5 คน<br>
+                คะแนนเฉลี่ย: 76.4
+            </div>
+        </div>
+
+        <!-- 5.18 PROJECT 2 -->
+        <div class="section" id="project2">
+            <div class="project-banner">
+                <div class="proj-label">🛒 โปรเจกต์จริง #2</div>
+                <h3>ระบบร้านค้า</h3>
+                <p>สร้างระบบตะกร้าสินค้าที่เพิ่มสินค้า คำนวณราคา และจัดการสต็อกได้</p>
+            </div>
+
+            <pre><code><span class="file-tag">shop-system.ts</span><span class="cmt">// ─── ชนิดข้อมูล ───</span>
+<span class="kw">type</span> <span class="ty">Product</span> <span class="op">=</span> {
+  id<span class="op">:</span>    <span class="ty">number</span>
+  name<span class="op">:</span>  <span class="ty">string</span>
+  price<span class="op">:</span> <span class="ty">number</span>
+  stock<span class="op">:</span> <span class="ty">number</span>
+}
+
+<span class="kw">type</span> <span class="ty">CartItem</span> <span class="op">=</span> {
+  productId<span class="op">:</span> <span class="ty">number</span>
+  qty<span class="op">:</span>       <span class="ty">number</span>
+}
+
+<span class="cmt">// ─── สินค้าในร้าน ───</span>
+<span class="kw">let</span> products<span class="op">:</span> <span class="ty">Product</span>[] <span class="op">=</span> [
+  { id: <span class="num">1</span>, name: <span class="str">"กาแฟ"</span>,      price: <span class="num">65</span>,  stock: <span class="num">50</span> },
+  { id: <span class="num">2</span>, name: <span class="str">"ชาเขียว"</span>,   price: <span class="num">55</span>,  stock: <span class="num">30</span> },
+  { id: <span class="num">3</span>, name: <span class="str">"ขนมปัง"</span>,    price: <span class="num">35</span>,  stock: <span class="num">20</span> },
+  { id: <span class="num">4</span>, name: <span class="str">"น้ำส้มคั้น"</span>, price: <span class="num">80</span>,  stock: <span class="num">15</span> },
+]
+
+<span class="kw">let</span> cart<span class="op">:</span> <span class="ty">CartItem</span>[] <span class="op">=</span> []
+
+<span class="cmt">// ─── Functions ───</span>
+
+<span class="cmt">// หาสินค้าตาม id</span>
+<span class="kw">const</span> findProduct <span class="op">=</span> (id<span class="op">:</span> <span class="ty">number</span>) <span class="op">=></span>
+  products.<span class="fn">find</span>(p <span class="op">=></span> p.id <span class="op">===</span> id)
+
+<span class="cmt">// เพิ่มสินค้าลงตะกร้า</span>
+<span class="kw">function</span> <span class="fn">addToCart</span>(productId<span class="op">:</span> <span class="ty">number</span>, qty<span class="op">:</span> <span class="ty">number</span>)<span class="op">:</span> <span class="ty">void</span> {
+  <span class="kw">const</span> product <span class="op">=</span> <span class="fn">findProduct</span>(productId)
+  <span class="kw">if</span> (<span class="op">!</span>product) {
+    console.<span class="fn">log</span>(<span class="str">"ไม่พบสินค้า"</span>)
+    <span class="kw">return</span>
+  }
+  <span class="kw">if</span> (product.stock <span class="op"><</span> qty) {
+    console.<span class="fn">log</span>(<span class="str">`สินค้า ${product.name} สต็อกไม่พอ (เหลือ ${product.stock})`</span>)
+    <span class="kw">return</span>
+  }
+  cart.<span class="fn">push</span>({ productId, qty })
+  console.<span class="fn">log</span>(<span class="str">`เพิ่ม ${product.name} x${qty} ในตะกร้าแล้ว`</span>)
+}
+
+<span class="cmt">// คำนวณราคารวม</span>
+<span class="kw">function</span> <span class="fn">getTotal</span>()<span class="op">:</span> <span class="ty">number</span> {
+  <span class="kw">return</span> cart.<span class="fn">map</span>(item <span class="op">=></span> {
+    <span class="kw">const</span> product <span class="op">=</span> <span class="fn">findProduct</span>(item.productId)
+    <span class="kw">return</span> (product<span class="op">?.</span>price <span class="op">??</span> <span class="num">0</span>) <span class="op">*</span> item.qty
+  }).<span class="fn">reduce</span>((a, b) <span class="op">=></span> a <span class="op">+</span> b, <span class="num">0</span>)
+}
+
+<span class="cmt">// แสดงตะกร้า</span>
+<span class="kw">function</span> <span class="fn">showCart</span>()<span class="op">:</span> <span class="ty">void</span> {
+  console.<span class="fn">log</span>(<span class="str">"─── 🛒 ตะกร้าสินค้า ───"</span>)
+  cart.<span class="fn">map</span>(item <span class="op">=></span> {
+    <span class="kw">const</span> p <span class="op">=</span> <span class="fn">findProduct</span>(item.productId)
+    console.<span class="fn">log</span>(<span class="str">`• ${p?.name} x${item.qty} = ${(p?.price ?? 0) * item.qty} บาท`</span>)
+  })
+  console.<span class="fn">log</span>(<span class="str">`รวม: ${<span class="fn">getTotal</span>()} บาท`</span>)
+}
+
+<span class="cmt">// กรองสินค้าที่ราคาต่ำกว่า 60 บาท</span>
+<span class="kw">const</span> cheapProducts <span class="op">=</span> () <span class="op">=></span>
+  products.<span class="fn">filter</span>(p <span class="op">=></span> p.price <span class="op"><</span> <span class="num">60</span>).<span class="fn">map</span>(p <span class="op">=></span> p.name)
+
+<span class="cmt">// ─── ทดสอบ ───</span>
+<span class="fn">addToCart</span>(<span class="num">1</span>, <span class="num">2</span>)   <span class="cmt">// กาแฟ 2 แก้ว</span>
+<span class="fn">addToCart</span>(<span class="num">3</span>, <span class="num">1</span>)   <span class="cmt">// ขนมปัง 1 ชิ้น</span>
+<span class="fn">addToCart</span>(<span class="num">2</span>, <span class="num">1</span>)   <span class="cmt">// ชาเขียว 1 แก้ว</span>
+
+<span class="fn">showCart</span>()
+
+console.<span class="fn">log</span>(<span class="str">"สินค้าต่ำกว่า 60 บาท:"</span>, <span class="fn">cheapProducts</span>())</code></pre>
+
+            <div class="output">
+                เพิ่ม กาแฟ x2 ในตะกร้าแล้ว<br>
+                เพิ่ม ขนมปัง x1 ในตะกร้าแล้ว<br>
+                เพิ่ม ชาเขียว x1 ในตะกร้าแล้ว<br>
+                ─── 🛒 ตะกร้าสินค้า ───<br>
+                • กาแฟ x2 = 130 บาท<br>
+                • ขนมปัง x1 = 35 บาท<br>
+                • ชาเขียว x1 = 55 บาท<br>
+                รวม: 220 บาท<br>
+                สินค้าต่ำกว่า 60 บาท: ["ชาเขียว", "ขนมปัง"]
+            </div>
+        </div>
+
+        <!-- FINAL SUMMARY -->
+        <div class="section">
+            <div class="section-label">สรุปภาพรวม</div>
+            <h2><span class="icon"
+                    style="background:linear-gradient(135deg,var(--tag-arr),var(--tag-fn))">🏆</span>สิ่งที่ได้เรียนในหน่วยที่
+                5</h2>
+
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="s-title">Array[]</div>
+                    <div class="s-body">เก็บข้อมูลหลายชิ้นในตัวแปรเดียว เข้าถึงด้วย index ที่เริ่มจาก 0</div>
+                </div>
+                <div class="summary-item">
+                    <div class="s-title">Tuple</div>
+                    <div class="s-body">Array พิเศษที่กำหนดชนิดข้อมูลแต่ละช่องได้แน่นอน</div>
+                </div>
+                <div class="summary-item">
+                    <div class="s-title">push / pop</div>
+                    <div class="s-body">เพิ่มหรือลบสมาชิกจากท้าย Array</div>
+                </div>
+                <div class="summary-item">
+                    <div class="s-title">map / filter</div>
+                    <div class="s-body">แปลงข้อมูลทุกตัว หรือกรองข้อมูลตามเงื่อนไข</div>
+                </div>
+                <div class="summary-item">
+                    <div class="s-title">Function</div>
+                    <div class="s-body">ห่อโค้ดไว้ใช้ซ้ำ รับ parameter และ return ค่ากลับได้</div>
+                </div>
+                <div class="summary-item">
+                    <div class="s-title">Arrow Function</div>
+                    <div class="s-body">เขียน Function แบบสั้นกระชับ ด้วยสัญลักษณ์ =&gt;</div>
+                </div>
+            </div>
+
+            <div class="card tip" style="margin-top: 20px;">
+                <div class="tip-icon">🎯</div>
+                <div>
+                    <strong>เคล็ดลับสู่ความเชี่ยวชาญ:</strong><br>
+                    ลองนำ Array + Function มาสร้างโปรเจกต์เล็กๆ ของตัวเอง เช่น รายการสิ่งที่ต้องทำ, แคลคูเลเตอร์เกรด,
+                    หรือระบบจองตั๋ว — การฝึกทำจริงคือวิธีเรียนที่ดีที่สุด
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
